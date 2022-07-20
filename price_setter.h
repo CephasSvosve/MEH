@@ -29,7 +29,7 @@ private:
 
 
     map<int,vector<order>> ask;
-    map<int,queue<order>> market_orders;//queue so that orders are executed using FIFO
+    map<int,queue<order>> market_orders = {};//queue so that orders are executed using FIFO
     map<int,double> best_bid;
     map<int,double> best_ask;
     map<int,double> mid_price;

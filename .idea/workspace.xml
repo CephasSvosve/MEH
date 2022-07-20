@@ -1,11 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="MEH" targetName="MEH" />
+    </generated>
+  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
+  <component name="ChangeListManager">
+    <list default="true" id="91711107-2cba-4769-a20b-48cc6c0df350" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/price_setter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/price_setter.h" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2CCtF86bkShaKLFnYvX0EmGod4P" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MEH" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MEH" TARGET_NAME="MEH" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MEH" RUN_TARGET_NAME="MEH">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="91711107-2cba-4769-a20b-48cc6c0df350" name="Default Changelist" comment="" />
+      <created>1658318288117</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1658318288117</updated>
+      <workItem from="1658318289904" duration="2281000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="512" height="466" key="DebuggerActiveHint" timestamp="1658319471237">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="512" height="466" key="DebuggerActiveHint/0.0.1440.900@0.0.1440.900" timestamp="1658319471237" />
+    <state x="593" y="350" key="Github.ShareDialog" timestamp="1658318826177">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="593" y="350" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1658318826177" />
+    <state x="512" y="151" key="Github.UntrackedFilesDialog" timestamp="1658318834891">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="512" y="151" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1658318834891" />
+    <state width="1396" height="283" key="GridCell.Tab.0.bottom" timestamp="1658319737581">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658319737581" />
+    <state width="1396" height="283" key="GridCell.Tab.0.center" timestamp="1658319737579">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1658319737579" />
+    <state width="1396" height="283" key="GridCell.Tab.0.left" timestamp="1658319737578">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1658319737578" />
+    <state width="1396" height="283" key="GridCell.Tab.0.right" timestamp="1658319737580">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1658319737580" />
+    <state width="1396" height="283" key="GridCell.Tab.1.bottom" timestamp="1658319744796">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658319744796" />
+    <state width="1396" height="283" key="GridCell.Tab.1.center" timestamp="1658319744794">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1658319744794" />
+    <state width="1396" height="283" key="GridCell.Tab.1.left" timestamp="1658319744792">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1658319744792" />
+    <state width="1396" height="283" key="GridCell.Tab.1.right" timestamp="1658319744795">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1396" height="283" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1658319744795" />
+    <state x="319" y="186" key="Vcs.Push.Dialog.v2" timestamp="1658318855473">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="319" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1658318855473" />
+    <state width="720" height="450" key="XDebugger.FullValuePopup" timestamp="1658319471223">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="720" height="450" key="XDebugger.FullValuePopup/0.0.1440.900@0.0.1440.900" timestamp="1658319471223" />
   </component>
 </project>

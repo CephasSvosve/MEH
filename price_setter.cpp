@@ -967,26 +967,26 @@ price_setter::clear(market_watch &market_clock){
 
 
 //market orders
-        map<double, queue<order>> market_bids_asks = {};
-        if (!this->market_orders.empty()) {
-            if (this->market_orders.find(k) != this->market_orders.end()) {
-                while(!this->market_orders.find(k)->second.empty()) {
-                    double market_price = this->market_orders.find(k)->second.front().get_proposed_price();
-
-
-                    market_price = (floor(market_price * 100)) / 100;
-                    if (market_bids_asks.find(market_price) != market_bids_asks.end()) {
-                        market_bids_asks.find(market_price)->second.push(this->market_orders.find(k)->second.front());
-                    } else {
-                        queue<order> a;
-                        a.push(this->market_orders.find(k)->second.front());
-                        market_bids_asks.emplace(market_price, a);
-                    }
-
-                    this->market_orders.find(k)->second.pop();
-                }
-            }
-        }
+//        map<double, queue<order>> market_bids_asks = {};
+//        if (!this->market_orders.empty()) {
+//            if (this->market_orders.find(k) != this->market_orders.end()) {
+//                while(!this->market_orders.find(k)->second.empty()) {
+//                    double market_price = this->market_orders.find(k)->second.front().get_proposed_price();
+//
+//
+//                    market_price = (floor(market_price * 100)) / 100;
+//                    if (market_bids_asks.find(market_price) != market_bids_asks.end()) {
+//                        market_bids_asks.find(market_price)->second.push(this->market_orders.find(k)->second.front());
+//                    } else {
+//                        queue<order> a;
+//                        a.push(this->market_orders.find(k)->second.front());
+//                        market_bids_asks.emplace(market_price, a);
+//                    }
+//
+//                    this->market_orders.find(k)->second.pop();
+//                }
+//            }
+//        }
 
 
 ////sum of orders
@@ -1057,19 +1057,20 @@ price_setter::clear(market_watch &market_clock){
                     add_mm_orders(new_orders1, bid_orders, ask_orders);
 //                    std::cout << "mmsk0 " << get<1>(new_orders1).get_proposed_price() << std::endl;
                     //match market orders with limit orders
-                    tuple<order, order>
-                            matched_orders =
-                            match_market_orders(this->market_orders.find(k)->second.front()
-                                                , *get_best_bid(bid_orders)
-                                                , *get_best_ask(ask_orders));
 
-                    if(this->market_orders.find(k)->second.front().get_status() == order::filled) {
-                        this->market_orders.find(k)->second.pop();
+                    if(this->market_orders.find(k) != this->market_orders.end()) {
+                        tuple<order, order>
+                                matched_orders =
+                                match_market_orders(this->market_orders.find(k)->second.front(),
+                                                    *get_best_bid(bid_orders), *get_best_ask(ask_orders));
+
+                        if (this->market_orders.find(k)->second.front().get_status() == order::filled) {
+                            this->market_orders.find(k)->second.pop();
+                        }
+
+                        executed_orders_ = {};
+                        executed_orders_ = record_executed_orders(matched_orders);
                     }
-
-                    executed_orders_ = {};
-                    executed_orders_ = record_executed_orders(matched_orders);
-
 
                     //update balances after each match
                     if (executed_orders_.find(this->get_identifier()) != executed_orders_.end()) {
