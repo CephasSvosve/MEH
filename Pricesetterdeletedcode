@@ -1,0 +1,2315 @@
+        {
+//match market order1
+//update mm order
+//match market order2
+//update mm order
+
+//match limit orders
+//update mm_order
+
+//determine price
+
+
+
+
+
+//match overlapping limit orders
+
+// Price           bid | | ask
+//  100          ......| |
+//  101          ......| |
+//  102            ****| |**
+//  103             ***| |****
+//  104                | |.....
+//  105                | |......
+//  106                | |.........
+
+
+
+
+//        for(auto i : bid.find(k)->second){
+//            std::cout<<"b "<<i.get_id()<<" "<< "("<<i.get_order_size()<<")"<<i.get_proposed_price()<<std::endl;
+//        }
+//        for(auto i : ask.find(k)->second){
+//            std::cout<<"a "<<i.get_id()<<" "<< "("<<i.get_order_size()<<")"<<i.get_proposed_price()<<std::endl;
+//        }
+//        if( !market_orders.empty() ){
+//        for(auto i : market_orders.find(k)->second){
+//            std::cout<<"m "<<i.get_id()<<" "<< "("<<i.get_order_size()<<")"<<i.get_proposed_price()<<std::endl;
+//
+//    }}
+//    for(auto &[bid_price, bid_vec] : bid_orders) {
+//        for (auto &bid_order: bid_vec) {
+//            for (auto &[ask_price, ask_vec]: ask_orders) {
+//                for (auto &ask_order : ask_vec) {
+////                    prevailing_ask = ask_price + 0.01;
+////                    prevailing_bid = bid_price - 0.01;
+//                    if (bid_price >= ask_price) {
+//
+//                        bool bid_is_active = bid_order.get_status();
+//                        bool ask_is_active = ask_order.get_status();
+//
+//                        //non-stale orders
+//                        if (bid_is_active && ask_is_active) {
+//                            //trade
+//
+//                            double BID = bid_order.get_order_size();
+//                            double ASK = ask_order.get_order_size();
+//                            auto uncleared = BID + ASK;
+//
+//                            //solve for the 3 situations: uncleared <, > or = 0;
+//                            if (uncleared < 0.) {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = ask_price;
+//                                auto ask_trader_id = ask_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::limit);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//                                double bid_ask_spread = bid_price - ask_price;
+//                                this->cash_at_hand += bid_ask_spread * BID;
+//
+//                                //update the ask orders remaining in the order vectors after execution of trade
+//                                ask_order.set_order_size(uncleared, ask_price);
+//                                //remove the fully filled bid order
+//                                bid_order.set_status(order::filled);
+//
+//                            } else if (uncleared > 0.) {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = ask_price;
+//                                auto ask_trader_id = ask_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::limit);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//                                //update cash earned from spread
+//                                double bid_ask_spread = bid_price - ask_price;
+//                                this->cash_at_hand += bid_ask_spread * -ASK;
+//
+//                                bid_order.set_order_size(uncleared, bid_price);
+//                                ask_order.set_status(order::filled);
+//                            } else {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = ask_price;
+//                                auto ask_trader_id = ask_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::limit);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//                                //update cash earned from spread
+//                                bid_order.set_status(order::filled);
+//                                ask_order.set_status(order::filled);
+//
+//                            }
+//                            ask_is_active = ask_order.get_status();
+//                            bid_is_active =  bid_order.get_status();
+//
+//                        }
+//
+//                        if (ask_is_active && !bid_is_active) {
+//                            //roll to next bid row but keep count of the ask we were now at to reduce computation burden
+//                            goto next_bid;
+//                        } else
+//                            if(!ask_is_active && bid_is_active){
+//                                //roll to next bid row but keep count of the ask we were now at to reduce computation burden
+//                                goto next_ask;
+//                            } else
+//                                {
+//                            goto next_ask;
+//                        }
+//
+//                    }else{
+//                        goto exit_loop;
+//                    }
+//                    next_ask:;
+//                }
+//
+//            }
+//            next_bid:;
+//        }
+//    }
+//    exit_loop:;
+
+
+////match market orders
+//if(!this->market_orders.empty()){
+//    if (this->market_orders.find(k) != this->market_orders.end()){
+//        for (auto &market_order : this->market_orders.find(k)->second){
+//            int active_limit_orders = 0;
+//            if (market_order.get_order_size() < 0.){
+//                for (auto &[price_, bid_vec] : bid_orders){
+//                    for (auto &order_: bid_vec){
+//
+//////////////////////////////////////////////////////////
+//                        if(order_.get_status() == 1){
+//                            active_limit_orders++;
+//                        }
+//
+//
+//                        update_mm_order:;
+//
+//                        order bid_order = order_;
+//                        double bid_price = price_;
+//
+//                        //recalculate market maker's position after each market order
+//                        tuple<double, order> mm_bid;
+//                        tuple<double, order> mm_ask;
+//
+//                        tuple<order, order> mm_orders_=
+//
+//                        mm_order(bid_orders
+//                                     ,ask_orders
+//                                        ,this->initial_invetory.find(k)->second
+//                                            , (this->stocks_at_hand.find(k)->second+short_stocks)
+//                                                , this->cash_at_hand, 3
+//                                                    , this->get_identifier()
+//                                                        , k);
+//
+//
+//                        get<0>(mm_bid) = get<0>(mm_orders_).get_proposed_price();
+//                        get<1>(mm_bid) = get<0>(mm_orders_);
+//
+//
+//                        get<0>(mm_ask) = get<1>(mm_orders_).get_proposed_price();
+//                        get<1>(mm_ask) = get<1>(mm_orders_);
+//
+//
+//                        if(get<0>(mm_bid) > bid_price ){
+//
+//                            bid_price = get<0>(mm_bid);
+//                            bid_order = get<1>(mm_bid);
+//
+//
+//                            bool bid_is_active = bid_order.get_status();
+//                            bool mktask_is_active = market_order.get_status();
+//                            if (bid_is_active && mktask_is_active) {
+//                                //trade
+//
+//                                double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                                double BID = bid_order.get_order_size();
+//                                double ASK = mkt_cash / bid_price;
+//                                auto uncleared = BID + ASK;
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                                if (uncleared < 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = bid_price;
+//                                    auto bid_trader_id = bid_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = bid_price;
+//                                    auto ask_trader_id = market_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//
+//                                    //update the ask orders remaining in the order vectors after execution of trade
+//                                    market_order.set_order_size((uncleared * bid_price) / market_order.get_proposed_price(),
+//                                                                market_order.get_proposed_price());
+//                                    //remove the fully filled bid order
+//                                    bid_order.set_status(order::filled);
+//
+//                                } else if (uncleared > 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = bid_price;
+//                                    auto bid_trader_id = bid_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = bid_price;
+//                                    auto ask_trader_id = market_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//                                    bid_order.set_order_size(uncleared, bid_price);
+//                                    market_order.set_status(order::filled);
+//
+//                                } else {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = bid_price;
+//                                    auto bid_trader_id = bid_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = bid_price;
+//                                    auto ask_trader_id = market_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//                                    bid_order.set_status(order::filled);
+//                                    market_order.set_status(order::filled);
+//                                }
+//                                bid_is_active = bid_order.get_status();
+//                                mktask_is_active = market_order.get_status();
+//                            }
+//
+//                            //assess which of the orders is filled
+//                            if (bid_is_active && !mktask_is_active){
+//                                //roll to next ask but on the same price
+//                                goto next_mkt_order;
+//                            }else
+//                            if (!bid_is_active && mktask_is_active){
+//                                goto update_mm_order;
+//                            }
+//                            else{
+//                                goto next_mkt_order;
+//                            }
+//
+//
+//
+//
+//                        }else
+//                            {
+//                                //do the standard market order to bid order
+//                                bool bid_is_active = bid_order.get_status();
+//                                bool mktask_is_active = market_order.get_status();
+//
+//                                if (bid_is_active && mktask_is_active) {
+//                                    //trade
+//
+//                                    double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                                    double BID = bid_order.get_order_size();
+//                                    double ASK = mkt_cash / bid_price;
+//                                    auto uncleared = BID + ASK;
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                                    if (uncleared < 0.) {
+//                                        //calculate executed bid
+//                                        order exec_bid;
+//                                        auto exec_bid_price = bid_price;
+//                                        auto bid_trader_id = bid_order.get_id();
+//
+//                                        exec_bid.set_id(bid_trader_id);
+//                                        exec_bid.set_status(order::active);
+//                                        exec_bid.set_order_type(order::limit);
+//                                        exec_bid.set_ordered_asset(stock.get_identifier());
+//                                        exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                        bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                        if (buyer_exists) {
+//                                            executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                        } else {
+//                                            executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                        }
+//
+//
+//                                        //calculate executed ask
+//                                        order exec_ask;
+//                                        auto exec_ask_price = bid_price;
+//                                        auto ask_trader_id = market_order.get_id();
+//
+//                                        exec_ask.set_id(ask_trader_id);
+//                                        exec_ask.set_status(order::active);
+//                                        exec_ask.set_order_type(order::market);
+//                                        exec_ask.set_ordered_asset(stock.get_identifier());
+//                                        exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                        bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                        if (seller_exists) {
+//                                            executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                        } else {
+//                                            executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                        }
+//
+//
+//
+//                                        //update the ask orders remaining in the order vectors after execution of trade
+//                                        market_order.set_order_size((uncleared * bid_price) / market_order.get_proposed_price(),
+//                                                                    market_order.get_proposed_price());
+//                                        //remove the fully filled bid order
+//                                        bid_order.set_status(order::filled);
+//
+//                                    } else if (uncleared > 0.) {
+//                                        //calculate executed bid
+//                                        order exec_bid;
+//                                        auto exec_bid_price = bid_price;
+//                                        auto bid_trader_id = bid_order.get_id();
+//
+//                                        exec_bid.set_id(bid_trader_id);
+//                                        exec_bid.set_status(order::active);
+//                                        exec_bid.set_order_type(order::limit);
+//                                        exec_bid.set_ordered_asset(stock.get_identifier());
+//                                        exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                        bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                        if (buyer_exists) {
+//                                            executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                        } else {
+//                                            executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                        }
+//
+//
+//
+//                                        //calculate executed ask
+//                                        order exec_ask;
+//                                        auto exec_ask_price = bid_price;
+//                                        auto ask_trader_id = market_order.get_id();
+//
+//                                        exec_ask.set_id(ask_trader_id);
+//                                        exec_ask.set_status(order::active);
+//                                        exec_ask.set_order_type(order::market);
+//                                        exec_ask.set_ordered_asset(stock.get_identifier());
+//                                        exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                        bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                        if (seller_exists) {
+//                                            executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                        } else {
+//                                            executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                        }
+//
+//
+//                                        bid_order.set_order_size(uncleared, bid_price);
+//                                        market_order.set_status(order::filled);
+//
+//                                    } else {
+//                                        //calculate executed bid
+//                                        order exec_bid;
+//                                        auto exec_bid_price = bid_price;
+//                                        auto bid_trader_id = bid_order.get_id();
+//
+//                                        exec_bid.set_id(bid_trader_id);
+//                                        exec_bid.set_status(order::active);
+//                                        exec_bid.set_order_type(order::limit);
+//                                        exec_bid.set_ordered_asset(stock.get_identifier());
+//                                        exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                        bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                        if (buyer_exists) {
+//                                            executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                        } else {
+//                                            executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                        }
+//
+//
+//
+//                                        //calculate executed ask
+//                                        order exec_ask;
+//                                        auto exec_ask_price = bid_price;
+//                                        auto ask_trader_id = market_order.get_id();
+//
+//                                        exec_ask.set_id(ask_trader_id);
+//                                        exec_ask.set_status(order::active);
+//                                        exec_ask.set_order_type(order::market);
+//                                        exec_ask.set_ordered_asset(stock.get_identifier());
+//                                        exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                        bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                        if (seller_exists) {
+//                                            executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                        } else {
+//                                            executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                        }
+//
+//
+//                                        bid_order.set_status(order::filled);
+//                                        market_order.set_status(order::filled);
+//                                    }
+//                                    bid_is_active = bid_order.get_status();
+//                                    mktask_is_active = market_order.get_status();
+//                                }
+//
+//                                //assess which of the orders is filled
+//                                if (bid_is_active && !mktask_is_active){
+//                                    //roll to next ask same row
+//                                    goto next_mkt_order;
+//                                }else
+//                                if (!bid_is_active && mktask_is_active){
+//                                    goto next_bid_order;
+//                                }
+//                                else{
+//                                    goto next_mkt_order;
+//                                }
+//                            }
+//
+//
+//
+//
+//                        //if mm_orders match limit orders, execute the orders also
+//                        if(ask_orders.find(get<0>(mm_bid)) != ask_orders.end()){
+//                            //market order to bid order first
+//                            for (auto &i : ask_orders.find(get<0>(mm_bid))->second) {
+//                                if(i.get_status() == 1 ){
+//
+//                                    bid_price = get<0>(mm_bid);
+//                                    double ask_price = bid_price;
+//
+//                                    bid_order = get<1>(mm_bid);
+//                                    order ask_order = i;
+//
+//                                    bool bid_is_active = bid_order.get_status();
+//                                    bool ask_is_active = ask_order.get_status();
+//                                    if (bid_is_active && ask_is_active) {
+//                                        //trade
+//
+//                                        double BID = bid_order.get_order_size();
+//                                        double ASK = ask_order.get_order_size();
+//                                        auto uncleared = BID + ASK;
+//
+//                                        //solve for the 3 situations: uncleared <, > or = 0;
+//                                        if (uncleared < 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            //update the ask orders remaining in the order vectors after execution of trade
+//                                            ask_order.set_order_size(uncleared, bid_price);
+//                                            //remove the fully filled bid order
+//                                            bid_order.set_status(order::filled);
+//
+//                                        } else if (uncleared > 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            bid_order.set_order_size(uncleared, bid_price);
+//                                            ask_order.set_status(order::filled);
+//                                        } else {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            //update cash earned from spread
+//                                            bid_order.set_status(order::filled);
+//                                            ask_order.set_status(order::filled);
+//
+//                                        }
+//                                        ask_is_active = ask_order.get_status();
+//                                        bid_is_active =  bid_order.get_status();
+//
+//                                    }
+//                                }
+//                            }
+//
+//
+//
+//                        }
+//
+//                        if (bid_orders.find(get<0>(mm_ask)) != bid_orders.end()){
+//                            for (auto &i : bid_orders.find(get<0>(mm_ask))->second) {
+//                                if(i.get_status() == 1 ){
+//
+//                                    double ask_price = get<0>(mm_ask);
+//                                    bid_price = ask_price;
+//                                    order ask_order = get<1>(mm_ask);
+//                                    bid_order = i;
+//
+//                                    bool bid_is_active = bid_order.get_status();
+//                                    bool ask_is_active = ask_order.get_status();
+//
+//                                    //non-stale orders
+//                                    if (bid_is_active && ask_is_active) {
+//                                        //trade
+//
+//                                        double BID = bid_order.get_order_size();
+//                                        double ASK = ask_order.get_order_size();
+//                                        auto uncleared = BID + ASK;
+//
+//                                        //solve for the 3 situations: uncleared <, > or = 0;
+//                                        if (uncleared < 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            //update the ask orders remaining in the order vectors after execution of trade
+//                                            ask_order.set_order_size(uncleared, ask_price);
+//                                            //remove the fully filled bid order
+//                                            bid_order.set_status(order::filled);
+//
+//                                        } else if (uncleared > 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            bid_order.set_order_size(uncleared, ask_price);
+//                                            ask_order.set_status(order::filled);
+//                                        } else {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            //update cash earned from spread
+//                                            bid_order.set_status(order::filled);
+//                                            ask_order.set_status(order::filled);
+//
+//                                        }
+//                                        ask_is_active = ask_order.get_status();
+//                                        bid_is_active =  bid_order.get_status();
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+//////////////////////////////////////////////////////////
+//
+//
+//                    next_bid_order:;
+//                    }
+//                }
+//
+//                if (active_limit_orders == 0){
+//                    //trade with the market maker
+//                    update_mm_order2:;
+//
+//                    double bid_price;
+//                    order bid_order;
+//
+//
+//                    //recalculate market maker's position after each market order
+//                    tuple<double, order> mm_bid;
+//                    tuple<double, order> mm_ask;
+//
+//                    tuple<order, order> mm_orders_=
+//
+//                            mm_order(bid_orders
+//                                    ,ask_orders
+//                                    ,this->initial_invetory.find(k)->second
+//                                            , (this->stocks_at_hand.find(k)->second+short_stocks)
+//                                    , this->cash_at_hand, 3
+//                                    , this->get_identifier()
+//                                    , k);
+//
+//
+//                    get<0>(mm_bid) = get<0>(mm_orders_).get_proposed_price();
+//                    get<1>(mm_bid) = get<0>(mm_orders_);
+//
+//
+//                    get<0>(mm_ask) = get<1>(mm_orders_).get_proposed_price();
+//                    get<1>(mm_ask) = get<1>(mm_orders_);
+//
+//
+//
+//                    bid_price = get<0>(mm_bid);
+//                    bid_order = get<1>(mm_bid);
+//
+//
+//                        bool bid_is_active = bid_order.get_status();
+//                        bool mktask_is_active = market_order.get_status();
+//                        if (bid_is_active && mktask_is_active) {
+//                            //trade
+//
+//                            double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                            double BID = bid_order.get_order_size();
+//                            double ASK = mkt_cash / bid_price;
+//                            auto uncleared = BID + ASK;
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                            if (uncleared < 0.) {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = bid_price;
+//                                auto ask_trader_id = market_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::market);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//
+//
+//                                //update the ask orders remaining in the order vectors after execution of trade
+//                                market_order.set_order_size((uncleared * bid_price) / market_order.get_proposed_price(),
+//                                                            market_order.get_proposed_price());
+//                                //remove the fully filled bid order
+//                                bid_order.set_status(order::filled);
+//
+//                            } else if (uncleared > 0.) {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = bid_price;
+//                                auto ask_trader_id = market_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::market);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//
+//                                bid_order.set_order_size(uncleared, bid_price);
+//                                market_order.set_status(order::filled);
+//
+//                            } else {
+//                                //calculate executed bid
+//                                order exec_bid;
+//                                auto exec_bid_price = bid_price;
+//                                auto bid_trader_id = bid_order.get_id();
+//
+//                                exec_bid.set_id(bid_trader_id);
+//                                exec_bid.set_status(order::active);
+//                                exec_bid.set_order_type(order::limit);
+//                                exec_bid.set_ordered_asset(stock.get_identifier());
+//                                exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                if (buyer_exists) {
+//                                    executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                } else {
+//                                    executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                }
+//
+//
+//
+//                                //calculate executed ask
+//                                order exec_ask;
+//                                auto exec_ask_price = bid_price;
+//                                auto ask_trader_id = market_order.get_id();
+//
+//                                exec_ask.set_id(ask_trader_id);
+//                                exec_ask.set_status(order::active);
+//                                exec_ask.set_order_type(order::market);
+//                                exec_ask.set_ordered_asset(stock.get_identifier());
+//                                exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                if (seller_exists) {
+//                                    executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                } else {
+//                                    executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                }
+//
+//
+//                                bid_order.set_status(order::filled);
+//                                market_order.set_status(order::filled);
+//                            }
+//                            bid_is_active = bid_order.get_status();
+//                            mktask_is_active = market_order.get_status();
+//                        }
+//
+//                        //assess which of the orders is filled
+//                        if (bid_is_active && !mktask_is_active){
+//                            //roll to next ask but on the same price
+//                            goto next_mkt_order;
+//                        }else
+//                        if (!bid_is_active && mktask_is_active){
+//                            goto update_mm_order2;
+//                        }
+//
+//                }
+//
+//            } else if (market_order.get_order_size() > 0.) {
+//                for (auto &[ask_price_, ask_vec] : ask_orders) {
+//                    for (auto &order_: ask_vec) {
+//
+//                        if(order_.get_status() == 1){
+//                            active_limit_orders++;
+//                        }
+//
+//                    update_mm_order1:;
+//
+//                        order ask_order = order_;
+//                        double ask_price = ask_price_;
+//
+//                        //recalculate market maker's position after each market order
+//                        tuple<double, order> mm_bid;
+//                        tuple<double, order> mm_ask;
+//
+//                        tuple<order, order> mm_orders_=
+//
+//                                mm_order(bid_orders
+//                                        ,ask_orders
+//                                        ,this->initial_invetory.find(k)->second
+//                                            , (this->stocks_at_hand.find(k)->second+short_stocks)
+//                                        , this->cash_at_hand, 3
+//                                        , this->get_identifier()
+//                                        , k);
+//
+//
+//                        get<0>(mm_bid) = get<0>(mm_orders_).get_proposed_price();
+//                        get<1>(mm_bid) = get<0>(mm_orders_);
+//
+//
+//                        get<0>(mm_ask) = get<1>(mm_orders_).get_proposed_price();
+//                        get<1>(mm_ask) = get<1>(mm_orders_);
+//
+//
+//                        if(get<0>(mm_ask) < ask_price ) {
+//
+//                            ask_price = get<0>(mm_ask);
+//                            ask_order = get<1>(mm_ask);
+//
+//                            //do everything using mm_ask
+//                            bool ask_is_active = ask_order.get_status();
+//                            bool mktbid_is_active = market_order.get_status();
+//
+//
+//                            if (ask_is_active && mktbid_is_active) {
+//                                //trade
+//                                double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                                double BID = mkt_cash / (ask_price);
+//                                double ASK = ask_order.get_order_size();
+//                                auto uncleared = BID + ASK;
+//
+//
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                                if (uncleared < 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//
+//                                    //update the ask orders remaining in the order vectors after execution of trade
+//                                    ask_order.set_order_size(uncleared, ask_price);
+//                                    //remove the fully filled bid order
+//                                    market_order.set_status(order::filled);
+//
+//                                } else if (uncleared > 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//                                    market_order.set_order_size(
+//                                            (uncleared * ask_price) / market_order.get_proposed_price(),
+//                                            market_order.get_proposed_price());
+//                                    ask_order.set_status(order::filled);
+//
+//
+//                                } else {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//                                    market_order.set_status(order::filled);
+//                                    ask_order.set_status(order::filled);
+//                                }
+//                                ask_is_active = ask_order.get_status();
+//                                mktbid_is_active = market_order.get_status();
+//                            }
+//                            //assess which of the orders is filled
+//
+//                            //assess which of the orders is filled
+//                            if (ask_is_active && !mktbid_is_active){
+//                                //roll to next ask same row
+//                                goto next_mkt_order;
+//                            }else
+//                            if (!ask_is_active && mktbid_is_active){
+//                                goto update_mm_order1;
+//                            }
+//                            else{
+//                                goto next_mkt_order;
+//                            }
+//                        }else{
+//
+//
+//                            bool ask_is_active = ask_order.get_status();
+//                            bool mktbid_is_active = market_order.get_status();
+//
+//
+//                            if (ask_is_active && mktbid_is_active) {
+//                                //trade
+//                                double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                                double BID = mkt_cash / (ask_price);
+//                                double ASK = ask_order.get_order_size();
+//                                auto uncleared = BID + ASK;
+//
+//
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                                if (uncleared < 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//
+//                                    //update the ask orders remaining in the order vectors after execution of trade
+//                                    ask_order.set_order_size(uncleared, ask_price);
+//                                    //remove the fully filled bid order
+//                                    market_order.set_status(order::filled);
+//
+//                                } else if (uncleared > 0.) {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//                                    market_order.set_order_size(
+//                                            (uncleared * ask_price) / market_order.get_proposed_price(),
+//                                            market_order.get_proposed_price());
+//                                    ask_order.set_status(order::filled);
+//
+//
+//                                } else {
+//                                    //calculate executed bid
+//                                    order exec_bid;
+//                                    auto exec_bid_price = ask_price;
+//                                    auto bid_trader_id = market_order.get_id();
+//
+//                                    exec_bid.set_id(bid_trader_id);
+//                                    exec_bid.set_status(order::active);
+//                                    exec_bid.set_order_type(order::limit);
+//                                    exec_bid.set_ordered_asset(stock.get_identifier());
+//                                    exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                    bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                    if (buyer_exists) {
+//                                        executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                    } else {
+//                                        executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                    }
+//
+//
+//
+//
+//                                    //calculate executed ask
+//                                    order exec_ask;
+//                                    auto exec_ask_price = ask_price;
+//                                    auto ask_trader_id = ask_order.get_id();
+//
+//                                    exec_ask.set_id(ask_trader_id);
+//                                    exec_ask.set_status(order::active);
+//                                    exec_ask.set_order_type(order::market);
+//                                    exec_ask.set_ordered_asset(stock.get_identifier());
+//                                    exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                    bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                    if (seller_exists) {
+//                                        executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                    } else {
+//                                        executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                    }
+//
+//
+//                                    market_order.set_status(order::filled);
+//                                    ask_order.set_status(order::filled);
+//                                }
+//                                ask_is_active = ask_order.get_status();
+//                                mktbid_is_active = market_order.get_status();
+//                            }
+//                            //assess which of the orders is filled
+//
+//                            //assess which of the orders is filled
+//                            if (ask_is_active && !mktbid_is_active){
+//                                //roll to next ask same row
+//                                goto next_mkt_order;
+//                            }else
+//                            if (!ask_is_active && mktbid_is_active){
+//                                goto next_ask_order;
+//                            }
+//                            else{
+//                                goto next_mkt_order;
+//                            }
+//                        }
+//
+//                        //if mm_orders match limit orders, execute the orders also
+//                        if(ask_orders.find(get<0>(mm_bid)) != ask_orders.end()){
+//                            //market order to bid order first
+//                            for (auto &i : ask_orders.find(get<0>(mm_bid))->second) {
+//                                if(i.get_status() == 1 ){
+//
+//                                    double bid_price = get<0>(mm_bid);
+//                                    ask_price = bid_price;
+//
+//                                    order bid_order = get<1>(mm_bid);
+//                                    ask_order = i;
+//
+//                                    bool bid_is_active = bid_order.get_status();
+//                                    bool ask_is_active = ask_order.get_status();
+//                                    if (bid_is_active && ask_is_active) {
+//                                        //trade
+//
+//                                        double BID = bid_order.get_order_size();
+//                                        double ASK = ask_order.get_order_size();
+//                                        auto uncleared = BID + ASK;
+//
+//                                        //solve for the 3 situations: uncleared <, > or = 0;
+//                                        if (uncleared < 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            //update the ask orders remaining in the order vectors after execution of trade
+//                                            ask_order.set_order_size(uncleared, bid_price);
+//                                            //remove the fully filled bid order
+//                                            bid_order.set_status(order::filled);
+//
+//                                        } else if (uncleared > 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            bid_order.set_order_size(uncleared, bid_price);
+//                                            ask_order.set_status(order::filled);
+//                                        } else {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = bid_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = bid_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            //update cash earned from spread
+//                                            bid_order.set_status(order::filled);
+//                                            ask_order.set_status(order::filled);
+//
+//                                        }
+//                                        ask_is_active = ask_order.get_status();
+//                                        bid_is_active =  bid_order.get_status();
+//
+//                                    }
+//                                }
+//                            }
+//
+//
+//
+//                        }
+//
+//                        if (bid_orders.find(get<0>(mm_ask)) != bid_orders.end()){
+//                            for (auto &i : bid_orders.find(get<0>(mm_ask))->second) {
+//                                if(i.get_status() == 1 ){
+//
+//                                    ask_price = get<0>(mm_ask);
+//                                    double bid_price = ask_price;
+//
+//                                    ask_order = get<1>(mm_ask);
+//                                    order bid_order = i;
+//
+//                                    bool bid_is_active = bid_order.get_status();
+//                                    bool ask_is_active = ask_order.get_status();
+//
+//                                    //non-stale orders
+//                                    if (bid_is_active && ask_is_active) {
+//                                        //trade
+//
+//                                        double BID = bid_order.get_order_size();
+//                                        double ASK = ask_order.get_order_size();
+//                                        auto uncleared = BID + ASK;
+//
+//                                        //solve for the 3 situations: uncleared <, > or = 0;
+//                                        if (uncleared < 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            //update the ask orders remaining in the order vectors after execution of trade
+//                                            ask_order.set_order_size(uncleared, ask_price);
+//                                            //remove the fully filled bid order
+//                                            bid_order.set_status(order::filled);
+//
+//                                        } else if (uncleared > 0.) {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//
+//                                            bid_order.set_order_size(uncleared, ask_price);
+//                                            ask_order.set_status(order::filled);
+//                                        } else {
+//                                            //calculate executed bid
+//                                            order exec_bid;
+//                                            auto exec_bid_price = ask_price;
+//                                            auto bid_trader_id = bid_order.get_id();
+//
+//                                            exec_bid.set_id(bid_trader_id);
+//                                            exec_bid.set_status(order::active);
+//                                            exec_bid.set_order_type(order::limit);
+//                                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                                            if (buyer_exists) {
+//                                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                                            } else {
+//                                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                                            }
+//
+//
+//
+//                                            //calculate executed ask
+//                                            order exec_ask;
+//                                            auto exec_ask_price = ask_price;
+//                                            auto ask_trader_id = ask_order.get_id();
+//
+//                                            exec_ask.set_id(ask_trader_id);
+//                                            exec_ask.set_status(order::active);
+//                                            exec_ask.set_order_type(order::limit);
+//                                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                                            if (seller_exists) {
+//                                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                                            } else {
+//                                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                                            }
+//
+//                                            //update cash earned from spread
+//                                            bid_order.set_status(order::filled);
+//                                            ask_order.set_status(order::filled);
+//
+//                                        }
+//                                        ask_is_active = ask_order.get_status();
+//                                        bid_is_active =  bid_order.get_status();
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//
+//
+//                    next_ask_order:;
+//                    }
+//                }
+//                if (active_limit_orders == 0){
+//
+//                    update_mm_order3:;
+//
+//                    double ask_price;
+//                    order ask_order;
+//
+//                    //recalculate market maker's position after each market order
+//                    tuple<double, order> mm_bid;
+//                    tuple<double, order> mm_ask;
+//
+//                    tuple<order, order> mm_orders_=
+//
+//                            mm_order(bid_orders
+//                                    ,ask_orders
+//                                    ,this->initial_invetory.find(k)->second
+//                                            , (this->stocks_at_hand.find(k)->second+short_stocks)
+//                                    , this->cash_at_hand, 3
+//                                    , this->get_identifier()
+//                                    , k);
+//
+//
+//                    get<0>(mm_bid) = get<0>(mm_orders_).get_proposed_price();
+//                    get<1>(mm_bid) = get<0>(mm_orders_);
+//
+//
+//                    get<0>(mm_ask) = get<1>(mm_orders_).get_proposed_price();
+//                    get<1>(mm_ask) = get<1>(mm_orders_);
+//
+//
+//                    ask_price = get<0>(mm_ask);
+//                    ask_order = get<1>(mm_ask);
+//
+//                    //do everything using mm_ask
+//                    bool ask_is_active = ask_order.get_status();
+//                    bool mktbid_is_active = market_order.get_status();
+//
+//
+//                    if (ask_is_active && mktbid_is_active) {
+//                        //trade
+//                        double mkt_cash = market_order.get_order_size() * market_order.get_proposed_price();
+//                        double BID = mkt_cash / (ask_price);
+//                        double ASK = ask_order.get_order_size();
+//                        auto uncleared = BID + ASK;
+//
+//
+//
+////solve for the 3 situations: uncleared <, > or = 0;
+//                        if (uncleared < 0.) {
+//                            //calculate executed bid
+//                            order exec_bid;
+//                            auto exec_bid_price = ask_price;
+//                            auto bid_trader_id = market_order.get_id();
+//
+//                            exec_bid.set_id(bid_trader_id);
+//                            exec_bid.set_status(order::active);
+//                            exec_bid.set_order_type(order::limit);
+//                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                            if (buyer_exists) {
+//                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                            } else {
+//                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                            }
+//
+//
+//                            //calculate executed ask
+//                            order exec_ask;
+//                            auto exec_ask_price = ask_price;
+//                            auto ask_trader_id = ask_order.get_id();
+//
+//                            exec_ask.set_id(ask_trader_id);
+//                            exec_ask.set_status(order::active);
+//                            exec_ask.set_order_type(order::market);
+//                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                            if (seller_exists) {
+//                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                            } else {
+//                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                            }
+//
+//
+//
+//                            //update the ask orders remaining in the order vectors after execution of trade
+//                            ask_order.set_order_size(uncleared, ask_price);
+//                            //remove the fully filled bid order
+//                            market_order.set_status(order::filled);
+//
+//                        } else if (uncleared > 0.) {
+//                            //calculate executed bid
+//                            order exec_bid;
+//                            auto exec_bid_price = ask_price;
+//                            auto bid_trader_id = market_order.get_id();
+//
+//                            exec_bid.set_id(bid_trader_id);
+//                            exec_bid.set_status(order::active);
+//                            exec_bid.set_order_type(order::limit);
+//                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                            exec_bid.set_order_size((BID - uncleared), exec_bid_price);
+//
+//                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                            if (buyer_exists) {
+//                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                            } else {
+//                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                            }
+//
+//
+//
+//                            //calculate executed ask
+//                            order exec_ask;
+//                            auto exec_ask_price = ask_price;
+//                            auto ask_trader_id = ask_order.get_id();
+//
+//                            exec_ask.set_id(ask_trader_id);
+//                            exec_ask.set_status(order::active);
+//                            exec_ask.set_order_type(order::market);
+//                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                            exec_ask.set_order_size(-(BID - uncleared), exec_ask_price);
+//
+//                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                            if (seller_exists) {
+//                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                            } else {
+//                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                            }
+//
+//                            market_order.set_order_size(
+//                                    (uncleared * ask_price) / market_order.get_proposed_price(),
+//                                    market_order.get_proposed_price());
+//                            ask_order.set_status(order::filled);
+//
+//
+//                        } else {
+//                            //calculate executed bid
+//                            order exec_bid;
+//                            auto exec_bid_price = ask_price;
+//                            auto bid_trader_id = market_order.get_id();
+//
+//                            exec_bid.set_id(bid_trader_id);
+//                            exec_bid.set_status(order::active);
+//                            exec_bid.set_order_type(order::limit);
+//                            exec_bid.set_ordered_asset(stock.get_identifier());
+//                            exec_bid.set_order_size(BID, exec_bid_price);
+//
+//                            bool buyer_exists = executed_orders_.find(bid_trader_id) != executed_orders_.end();
+//                            if (buyer_exists) {
+//                                executed_orders_.find(bid_trader_id)->second.push_back(exec_bid);
+//                            } else {
+//                                executed_orders_.emplace(bid_trader_id, vector({exec_bid}));
+//                            }
+//
+//
+//
+//
+//                            //calculate executed ask
+//                            order exec_ask;
+//                            auto exec_ask_price = ask_price;
+//                            auto ask_trader_id = ask_order.get_id();
+//
+//                            exec_ask.set_id(ask_trader_id);
+//                            exec_ask.set_status(order::active);
+//                            exec_ask.set_order_type(order::market);
+//                            exec_ask.set_ordered_asset(stock.get_identifier());
+//                            exec_ask.set_order_size(-BID, exec_ask_price);
+//
+//                            bool seller_exists = executed_orders_.find(ask_trader_id) != executed_orders_.end();
+//                            if (seller_exists) {
+//                                executed_orders_.find(ask_trader_id)->second.push_back(exec_ask);
+//                            } else {
+//                                executed_orders_.emplace(ask_trader_id, vector({exec_ask}));
+//                            }
+//
+//
+//                            market_order.set_status(order::filled);
+//                            ask_order.set_status(order::filled);
+//                        }
+//                        ask_is_active = ask_order.get_status();
+//                        mktbid_is_active = market_order.get_status();
+//                    }
+//                    //assess which of the orders is filled
+//
+//                    //assess which of the orders is filled
+//                    if (ask_is_active && !mktbid_is_active) {
+//                        //roll to next ask same row
+//                        goto next_mkt_order;
+//                    }else
+//                    if (!ask_is_active && mktbid_is_active){
+//                        goto update_mm_order3;
+//                    }
+//                    else{
+//                        goto next_mkt_order;
+//                    }
+//                }
+//            }
+//            next_mkt_order:;
+//
+//        }
+//    }
+//}
+
+
+
+//    tuple<order, order> mm_orders_=
+//
+//            mm_order(bid_orders
+//                    ,ask_orders
+//                    ,this->initial_invetory.find(k)->second
+//                                            , (this->stocks_at_hand.find(k)->second+short_stocks)
+//                    , this->cash_at_hand, 3
+//                    , this->get_identifier()
+//                    , k);
+//
+//
+//    double mm_bid = get<0>(mm_orders_).get_proposed_price();
+//    double mm_ask = get<1>(mm_orders_).get_proposed_price();
+//
+        }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    int x=0;
+//    for(auto &[price,vec]:bid_orders){
+//        for(auto &od : vec){
+//            bool bid_available = od.get_status();
+//            if(bid_available){
+//                prevailing_bid = max(mm_bid, price);
+//                x++;
+//                goto exit_point;
+//            }
+//        }
+//        exit_point:;
+//        if(x>0){
+//            break;
+//        }else{
+//            if(!vec.empty()){
+//            prevailing_bid= mm_bid;
+//         }
+//        }
+//    }if(x==0){
+//        prevailing_bid= mm_bid;
+//    }
+//
+//
+//    int y = 0;
+//    for(auto &[price,vec]:ask_orders){
+//        for(auto &ax_ : vec){
+//            bool ask_available = ax_.get_status();
+//            if(ask_available){
+//                prevailing_ask = min(mm_ask, price);
+//                y++;
+//                goto exit_point_;
+//            }
+//        }
+//        exit_point_:;
+//        if(y>0){
+//            break;
+//        }else{
+//            if(!vec.empty()){
+//                prevailing_ask= mm_ask;
+//            }else{
+//                prevailing_ask = mm_ask;
+//            }
+//        }
+//    }if (y==0){
+//        prevailing_ask = mm_ask;
+//    }
+
+////////////////////////////////
+//else{
+//    do {
+//    active_mmbid_orders =0;
+//    active_mmask_orders =0;
+////update market maker's orders
+//    cancel_mm_orders(
+//            this->get_identifier(), bid_orders, ask_orders);
+//
+//    tuple<order, order> new_orders =
+//            update_mm_orders(bid_orders, ask_orders, this->initial_invetory.find(k)->second,
+//                             (this->stocks_at_hand.find(k)->second+short_stocks), stock.get_midprice(), 3,
+//                             this->get_identifier(), k);
+//
+//    add_mm_orders(new_orders, bid_orders, ask_orders);
+//
+////    std::cout<<"mm_ask "<<get<1>(new_orders).get_proposed_price()<<" mm_bid "<< get<0>(new_orders).get_proposed_price()<<std::endl;
+////match limit orders after all market orders have been executed
+//    double best_bid_price = floor(get_best_bid(bid_orders)->get_proposed_price() * 100) / 100;
+//    double best_ask_price = floor(get_best_ask(ask_orders)->get_proposed_price() * 100) / 100;
+//
+//    if (best_bid_price == best_ask_price) {
+//        tuple<order, order>
+//                matched_limits2 =
+//                match_limit_orders(*get_best_bid(bid_orders), *get_best_ask(ask_orders));
+//
+//
+//        executed_orders_ = {};
+//        executed_orders_ = record_executed_orders(matched_limits2);
+//
+//        //update balances after each match
+//        if (executed_orders_.find(this->get_identifier()) != executed_orders_.end()) {
+//            balance_bd(executed_orders_.find(
+//                    this->get_identifier()
+//            )->second);
+//        }
+//
+//        for (auto &[i, v]:this->trading_institutions) {
+//            bool trader_participated = executed_orders_.find(i) != executed_orders_.end();
+//            if (trader_participated) {
+//                auto exec_order = executed_orders_.find(i)->second;
+//                v->balance_bd(exec_order);
+//            }
+//        }
+//    }
+//
+//    for(auto &[price, vec]:bid_orders){
+//        for(auto &ord:vec){
+//            if (ord.get_id() == this->get_identifier()
+//                && ord.get_status() ==1 ){
+//                active_mmbid_orders ++;
+//                goto exitpoint;
+//            }
+//        }
+//    }exitpoint:;
+//
+//    for(auto &[price, vec]:ask_orders){
+//        for(auto &ord:vec){
+//            if (ord.get_id() == this->get_identifier()
+//                && ord.get_status() ==1 ){
+//                active_mmask_orders ++;
+//                goto exitpoint_;
+//            }
+//        }
+//    }exitpoint_:;
+////    prevailing_ask = floor(get_best_ask(ask_orders)->get_proposed_price()*100)/100;
+////    prevailing_bid = floor(get_best_bid(bid_orders)->get_proposed_price()*100)/100;
+//
+//}while ((active_mmbid_orders==0) || (active_mmask_orders==0));
+//}
+
+///////////////////////////
+{
+//compute the ratio of each stock's signal relative to sum described in (1)
+//    for(auto &[s, v] : quotes){
+//
+//
+//
+//        order buy_limit;
+//        order sell_limit;
+//        double non_overlapping_ask =0;
+//        double non_overlapping_bid =0;
+//        double bid_ =0;
+//        double ask_ =0;
+//
+////get the highest bid price,however, if there are no new better bid quotes we maintain bid at the recent last bid
+//        if(this->bid.find(s)!= this->bid.end()){
+//
+//            sort(this->bid.find(s)->second.begin(),this->bid.find(s)->second.end(),descending_order);
+//            bid_ = this->bid.find(s)->second.begin()->get_proposed_price();
+//            non_overlapping_bid = bid_;
+//
+//        }else{
+//
+//            if (this->ask.find(s) != this->ask.end()) {
+//                sort(this->ask.find(s)->second.begin(), this->ask.find(s)->second.end(), ascending_order);
+//                bid_ = this->ask.find(s)->second.begin()->get_proposed_price()-0.01;
+//                non_overlapping_bid = bid_;
+//
+//            } else{
+//                bid_= get<1>(v.get_price());
+//                non_overlapping_bid =bid_;
+//            }
+//
+//        }
+//
+////get the lowest ask price, if there are no new asks, maintain ask at the recent last ask
+//        if (this->ask.find(s) != this->ask.end()) {
+//            sort(this->ask.find(s)->second.begin(), this->ask.find(s)->second.end(), ascending_order);
+//            ask_ = this->ask.find(s)->second.begin()->get_proposed_price();
+//            non_overlapping_ask= ask_;
+//
+//        }else {
+//
+//            if(this->bid.find(s)!= this->bid.end()){
+//
+//                sort(this->bid.find(s)->second.begin(),this->bid.find(s)->second.end(),descending_order);
+//                ask_ = this->bid.find(s)->second.begin()->get_proposed_price()+0.01;
+//                non_overlapping_ask = ask_;
+//
+//            } else{
+//                ask_= get<2>(v.get_price());
+//                non_overlapping_ask = ask_;
+//            }
+//        }
+//
+//
+////iterate through asks to find the first ask that is greater than the highest bid price
+//        if (this->ask.find(s) != this->ask.end()) {
+//            for (auto &i:this->ask.find(s)->second) {
+//                if (i.get_proposed_price() >= bid_) {
+//                    non_overlapping_ask = i.get_proposed_price()+0.01;
+//                    break;
+//                }
+//                //if all asks are greater than highest bid, (i.e. the 'for-loop' does not break)
+//                //then the ask is set to one basis point above the highest bid
+//                if(this->bid.find(s)!= this->bid.end()) {
+//                    non_overlapping_ask = this->bid.find(s)->second.begin()->get_proposed_price() + 0.01;
+//                }else {
+//                    non_overlapping_ask = bid_+0.01;
+//                }
+//            }
+//        }
+//
+////iterate through bids to find the first bid that is smaller than the lowest ask price
+//        if (this->bid.find(s) != this->bid.end()) {
+//            for (auto &i:this->bid.find(s)->second) {
+//                if (i.get_proposed_price() < ask_) {
+//                    non_overlapping_bid = i.get_proposed_price()-0.01;
+//                    break;
+//                }
+//                //if all bids are smaller than lowest ask, (i.e. the 'for-loop' does not break)
+//                //then the bid is set to one basis point below the lowest ask
+//                if(this->ask.find(s)!= this->ask.end()) {
+//                    non_overlapping_bid = this->ask.find(s)->second.begin()->get_proposed_price()-0.01;
+//                }else {
+//                    non_overlapping_bid = ask_-0.01;
+//                }
+//            }
+//        }
+//
+//
+//
+//        int short_stocks = 0;
+//            for(auto &[j,k]:this->trading_institutions){
+//                if ((k->stocks_at_hand.find(s) != k->stocks_at_hand.end())
+//                        && k->stocks_at_hand.find(s)->second<0){
+//
+//                    short_stocks += k->stocks_at_hand.find(s)->second;
+//                }
+//            }
+//
+//
+//        double init_price = 5;
+//        const double q    = this->initial_invetory.find(s)->second;
+//        double inventory_ = (this->stocks_at_hand.find(s)->second + short_stocks);
+//        double d_shares   =  inventory_ - q;
+//        double bid_price_ =  non_overlapping_bid;
+//        double ask_price_ = max(non_overlapping_ask, 3 - d_shares*10e-09);//((pow(q,2))/(pow(q,2)-pow(d_shares,2)));
+//
+//        sell_limit.set_id(this->get_identifier());
+//        sell_limit.set_order_type(order::limit);
+//        sell_limit.set_ordered_asset(s);
+//        sell_limit.set_order_size(-inventory_, ask_price_);
+//        sell_limit.set_status(order::active);
+//        //stack_ask(sell_limit.get_ordered_asset(), sell_limit);
+//
+//
+//        double tot_price = 0;
+//            for(auto &[x,v] : this->assets){
+//                tot_price += v.get_midprice();
+//            }
+//        double this_price = v.get_midprice();
+//        double k_proportion = this_price/tot_price;
+//        double cash_ = this->cash_at_hand/3;
+//
+//
+//        buy_limit.set_id(this->get_identifier());
+//        buy_limit.set_order_type(order::limit);
+//        buy_limit.set_ordered_asset(s);
+//        buy_limit.set_order_size(cash_/bid_price_, bid_price_);
+//        buy_limit.set_status(order::active);
+//        //stack_bid(buy_limit.get_ordered_asset(), buy_limit);
+//
+//
+    }
