@@ -6,11 +6,29 @@
 #include <string>
 #include <fstream>
 
-funds::funds(int sid) {
-    dX = generateWhiteNoise1(sid,3,50400);
+funds::funds(int bias) {
+
+//noise traders variations
+    dX = generateWhiteNoise1(bias,3,50400);
+
+//value trader variations
+    this->bias = 0;//-0.005 + (0.00001*bias);
+
+//tren-followers varitions
+
+    std::random_device rd;
+    std::mt19937 e2(rd());
+    std::uniform_int_distribution<> dist(21, 504);
+    int random_number1 = dist(e2);
+    int random_number2 = dist(e2);
+
+    this->window_size_MA1 = (random_number1<random_number2)? random_number1:random_number2;
+    this->window_size_MA2 = (random_number1>random_number2)? random_number1:random_number2;
+    
+    
+
+
 }
-
-
 
 
 map<int, order>
@@ -45,6 +63,7 @@ funds::invest(){
 
 }
 
+
 map<int, order>
 funds::current_price_order(
         int order_id
@@ -56,7 +75,6 @@ funds::current_price_order(
         , double available_cash
         , double current_position
         ){
-    std::cout<<"current_price_order: "<<"agent_id: "<<this->get_identifier()<<"asset_id: "<<asset_id<< " allocation: "<<allocation_<<std::endl;
     order market_order;
     order limit_order;
     map<int, order> result_;
@@ -66,6 +84,7 @@ funds::current_price_order(
     double T = ((port_alloc*wealth_*allocation_)/quote); //target position
     double C = current_position;//current position
     double E = T-C;//Excess demand
+    int order_id_ = 0;
 
     //There are two types of transactions:
     // (1) those that require money to buy more shares or sell short more shares
@@ -86,45 +105,45 @@ funds::current_price_order(
 
     //Closing part of a position (will not require money)
     if(T<C && T>=0){
-        if (!this->pending_market_order) {
-            order_id = concat(1, order_id);
+        if (!this->pending_market_order.find(asset_id)->second) {
+            order_id_ = concat(1, order_id);
             market_order.set_id(this->get_identifier());
             market_order.set_order_type(order::market);
             market_order.set_ordered_asset(asset_id);
             market_order.set_order_size((1 - limit_order_proportion) * E, quote);
             market_order.set_status(order::active);
-            result_.emplace(order_id, market_order);
-            this->pending_market_order = true;
+            result_.emplace(order_id_, market_order);
+            this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*E, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
     }else
     if(T>C && T<=0){
 
-        if (!this->pending_market_order) {
-        order_id = concat(1, order_id);
+        if (!this->pending_market_order.find(asset_id)->second) {
+            order_id_ = concat(1, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1-limit_order_proportion)*E, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
-        this->pending_market_order = true;
+        result_.emplace(order_id_, market_order);
+        this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*E, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
     }else
         //expanding a position (requires money)
     if(T<C && C<=0){
@@ -132,48 +151,48 @@ funds::current_price_order(
         double available_funds = min(abs(available_cash*allocation_/quote), abs(E));
         available_funds = (E/abs(E))* available_funds;//we retain the sign of excess demand
 
-        if (!this->pending_market_order) {
-        order_id = concat(1, order_id);
+        if (!this->pending_market_order.find(asset_id)->second) {
+            order_id_ = concat(1, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1-limit_order_proportion)*available_funds, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
-        this->pending_market_order = true;
+        result_.emplace(order_id_, market_order);
+        this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*available_funds, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
 
     }else
     if(T>C && C>=0){
         double available_funds = min(abs(available_cash*allocation_/quote), abs(E));
         available_funds = (E/abs(E))* available_funds;//we retain the sign of excess demand
 
-        if (!this->pending_market_order) {
-        order_id = concat(1, order_id);
+        if (!this->pending_market_order.find(asset_id)->second) {
+            order_id_ = concat(1, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1-limit_order_proportion)*available_funds, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
-        this->pending_market_order = true;
+        result_.emplace(order_id_, market_order);
+        this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*available_funds, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
 
     }else
         //closing off previous position then expand into a new position  (hybrid)
@@ -182,25 +201,25 @@ funds::current_price_order(
         double available_funds = min(abs(available_cash*allocation_/quote), abs(T));
         available_funds = ((T/abs(T))* available_funds)-C;//we retain the sign of excess demand
 
-        if (!this->pending_market_order) {
+        if (!this->pending_market_order.find(asset_id)->second) {
         //first close off current position
-        order_id = concat(1, order_id);
+            order_id_ = concat(1, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1-limit_order_proportion)*available_funds, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
-        this->pending_market_order = true;
+        result_.emplace(order_id_, market_order);
+        this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*available_funds, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
 
     }else
     if(T<0 && C>0){
@@ -210,34 +229,32 @@ funds::current_price_order(
 
 
         //first close off current position
-        if (!this->pending_market_order) {
-        order_id = concat(1, order_id);
+        if (!this->pending_market_order.find(asset_id)->second) {
+            order_id_ = concat(1, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1-limit_order_proportion)*available_funds, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
-        this->pending_market_order = true;
+        result_.emplace(order_id_, market_order);
+        this->pending_market_order.find(asset_id)->second = true;
         }
 
-        order_id = concat(2, order_id);
+        order_id_ = concat(2, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion)*available_funds, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
 
     }
 
 return result_;
 }
 
-
-
 map<int, order>
-funds::predicted_price_order(
+funds::reb_wealth(
         int order_id
         , int asset_id
         , double quote
@@ -247,7 +264,103 @@ funds::predicted_price_order(
         , double wealth_
         , double current_position
 ){
-    std::cout<<"predicted_price: "<<"agent_id: "<<this->get_identifier()<<" asset_id: "<<asset_id<< " allocation: "<<allocation_<<std::endl;
+    double T = ((port_alloc*wealth_*allocation_)/quote); //target position
+    double C = current_position;
+
+    double excess = T-C;
+
+
+    order market_order;
+    order limit_order;
+    map<int, order> result_;
+    double limit_order_proportion =0.5;
+    int order_id_ = 0;
+
+    if(T<C && T>0){
+
+
+        order_id_ = concat(-5, order_id);
+        limit_order.set_id(this->get_identifier());
+        limit_order.set_order_type(order::limit);
+        limit_order.set_ordered_asset(asset_id);
+        limit_order.set_order_size(excess*limit_order_proportion, quote);
+        limit_order.set_status(order::active);
+        result_.emplace(order_id_, limit_order);
+
+        order_id_ = concat(-6, order_id);
+        market_order.set_id(this->get_identifier());
+        market_order.set_order_type(order::market);
+        market_order.set_ordered_asset(asset_id);
+        market_order.set_order_size(excess*(1-limit_order_proportion), quote);
+        market_order.set_status(order::active);
+        result_.emplace(order_id_, market_order);
+    }else
+        if(C>0 && T<=0){
+            order_id_ = concat(-5, order_id);
+            limit_order.set_id(this->get_identifier());
+            limit_order.set_order_type(order::limit);
+            limit_order.set_ordered_asset(asset_id);
+            limit_order.set_order_size(-C*limit_order_proportion, quote);
+            limit_order.set_status(order::active);
+            result_.emplace(order_id_, limit_order);
+
+            order_id_ = concat(-6, order_id);
+            market_order.set_id(this->get_identifier());
+            market_order.set_order_type(order::market);
+            market_order.set_ordered_asset(asset_id);
+            market_order.set_order_size(-C*(1-limit_order_proportion), quote);
+            market_order.set_status(order::active);
+            result_.emplace(order_id_, market_order);
+        }else
+            if(T>C && C<0){
+                order_id_ = concat(-5, order_id);
+                limit_order.set_id(this->get_identifier());
+                limit_order.set_order_type(order::limit);
+                limit_order.set_ordered_asset(asset_id);
+                limit_order.set_order_size(-C*limit_order_proportion, quote);
+                limit_order.set_status(order::active);
+                result_.emplace(order_id_, limit_order);
+
+                order_id_ = concat(-6, order_id);
+                market_order.set_id(this->get_identifier());
+                market_order.set_order_type(order::market);
+                market_order.set_ordered_asset(asset_id);
+                market_order.set_order_size(-C*(1-limit_order_proportion), quote);
+                market_order.set_status(order::active);
+                result_.emplace(order_id_, market_order);
+            }else
+                if(T>=0 && C<0){
+                    order_id_ = concat(-5, order_id);
+                    limit_order.set_id(this->get_identifier());
+                    limit_order.set_order_type(order::limit);
+                    limit_order.set_ordered_asset(asset_id);
+                    limit_order.set_order_size(-C*limit_order_proportion, quote);
+                    limit_order.set_status(order::active);
+                    result_.emplace(order_id_, limit_order);
+
+                    order_id_ = concat(-6, order_id);
+                    market_order.set_id(this->get_identifier());
+                    market_order.set_order_type(order::market);
+                    market_order.set_ordered_asset(asset_id);
+                    market_order.set_order_size(-C*(1-limit_order_proportion), quote);
+                    market_order.set_status(order::active);
+                    result_.emplace(order_id_, market_order);
+                }
+
+    return result_;
+}
+
+map<int, order>
+funds::stocks_order(
+        int order_id
+        , int asset_id
+        , double quote
+        , double predicted_quote
+        , double allocation_
+        ,double port_alloc
+        , double wealth_
+        , double current_position
+){
     //signature
 //    if(T<C && T>0){}else
 //    if(T>C && T<0){}else
@@ -262,45 +375,102 @@ funds::predicted_price_order(
     //proportion of orders executed by limit entries
 
 
-    double T = ((port_alloc*wealth_*allocation_)/quote); //target position
+//    double T = ((port_alloc*wealth_*allocation_)/quote); //target position
+    double limit_order_proportion =0.5;
     double C = current_position;//current position
+    int order_id_ = 0;
+    //(1) limit sell under-priced stocks at hand
+    //(2) limit buy over-priced stocks at hand
 
-            if(0<=T && T<C){
-                order_id = concat(-1, order_id);
+    if(C<0 && allocation_<0){
+        order_id_ = concat(-1, order_id);
+        limit_order.set_id(this->get_identifier());
+        limit_order.set_order_type(order::limit);
+        limit_order.set_ordered_asset(asset_id);
+        limit_order.set_order_size(-C, predicted_quote);
+        limit_order.set_status(order::active);
+        result_.emplace(order_id_, limit_order);
+    }else
+        if(C>0 && allocation_>0){
+            order_id_ = concat(-1, order_id);
+            limit_order.set_id(this->get_identifier());
+            limit_order.set_order_type(order::limit);
+            limit_order.set_ordered_asset(asset_id);
+            limit_order.set_order_size(-C, predicted_quote);
+            limit_order.set_status(order::active);
+            result_.emplace(order_id_, limit_order);
+        }else
+            if(C>0 && allocation_<=0){
+                order_id_ = concat(-1, order_id);
+                limit_order.set_id(this->get_identifier());
+                limit_order.set_order_type(order::limit);
+                limit_order.set_ordered_asset(asset_id);
+                limit_order.set_order_size(-C*limit_order_proportion, quote);
+                limit_order.set_status(order::active);
+                result_.emplace(order_id_, limit_order);
+
+                order_id_ = concat(-2, order_id);
                 market_order.set_id(this->get_identifier());
-                market_order.set_order_type(order::limit);
+                market_order.set_order_type(order::market);
                 market_order.set_ordered_asset(asset_id);
-                market_order.set_order_size(-T, predicted_quote);
+                market_order.set_order_size(-C*(1-limit_order_proportion), quote);
                 market_order.set_status(order::active);
-                result_.emplace(order_id, market_order);
+                result_.emplace(order_id_, market_order);
             }else
-            if(C<T && T<=0){
-                order_id = concat(-1, order_id);
-                limit_order.set_id(this->get_identifier());
-                limit_order.set_order_type(order::limit);
-                limit_order.set_ordered_asset(asset_id);
-                limit_order.set_order_size(-T, predicted_quote);
-                limit_order.set_status(order::active);
-                result_.emplace(order_id, limit_order);
-            }else
-            if(T<C && C<=0){
-                order_id = concat(-1, order_id);
-                limit_order.set_id(this->get_identifier());
-                limit_order.set_order_type(order::limit);
-                limit_order.set_ordered_asset(asset_id);
-                limit_order.set_order_size(-C, predicted_quote);
-                limit_order.set_status(order::active);
-                result_.emplace(order_id, limit_order);
-            }else
-            if(0<=C && C<T){
-                order_id = concat(-1, order_id);
-                limit_order.set_id(this->get_identifier());
-                limit_order.set_order_type(order::limit);
-                limit_order.set_ordered_asset(asset_id);
-                limit_order.set_order_size(-C, predicted_quote);
-                limit_order.set_status(order::active);
-                result_.emplace(order_id, limit_order);
-            }
+                if(C<0 && allocation_>=0){
+                    order_id_ = concat(-1, order_id);
+                    limit_order.set_id(this->get_identifier());
+                    limit_order.set_order_type(order::limit);
+                    limit_order.set_ordered_asset(asset_id);
+                    limit_order.set_order_size(-C*limit_order_proportion, quote);
+                    limit_order.set_status(order::active);
+                    result_.emplace(order_id_, limit_order);
+
+                    order_id_ = concat(-2, order_id);
+                    market_order.set_id(this->get_identifier());
+                    market_order.set_order_type(order::market);
+                    market_order.set_ordered_asset(asset_id);
+                    market_order.set_order_size(-C*(1-limit_order_proportion), quote);
+                    market_order.set_status(order::active);
+                    result_.emplace(order_id_, market_order);
+                }
+
+//            if(0<=T && T<C){
+//                order_id = concat(-1, order_id);
+//                market_order.set_id(this->get_identifier());
+//                market_order.set_order_type(order::limit);
+//                market_order.set_ordered_asset(asset_id);
+//                market_order.set_order_size(-T, predicted_quote);
+//                market_order.set_status(order::active);
+//                result_.emplace(order_id, market_order);
+//            }else
+//            if(C<T && T<=0){
+//                order_id = concat(-1, order_id);
+//                limit_order.set_id(this->get_identifier());
+//                limit_order.set_order_type(order::limit);
+//                limit_order.set_ordered_asset(asset_id);
+//                limit_order.set_order_size(-T, predicted_quote);
+//                limit_order.set_status(order::active);
+//                result_.emplace(order_id, limit_order);
+//            }else
+//            if(T<C && C<=0){
+//                order_id = concat(-1, order_id);
+//                limit_order.set_id(this->get_identifier());
+//                limit_order.set_order_type(order::limit);
+//                limit_order.set_ordered_asset(asset_id);
+//                limit_order.set_order_size(-C, predicted_quote);
+//                limit_order.set_status(order::active);
+//                result_.emplace(order_id, limit_order);
+//            }else
+//            if(0<=C && C<T){
+//                order_id = concat(-1, order_id);
+//                limit_order.set_id(this->get_identifier());
+//                limit_order.set_order_type(order::limit);
+//                limit_order.set_ordered_asset(asset_id);
+//                limit_order.set_order_size(-C, predicted_quote);
+//                limit_order.set_status(order::active);
+//                result_.emplace(order_id, limit_order);
+//            }
     return result_;
 }
 
@@ -311,9 +481,9 @@ funds::free_cash_distribution(int order_id
         , double allocation_
         , double available_cash
 ){
-    std::cout<<"cash_distribution: "<<"agent_id: "<<this->get_identifier()<<"asset_id: "<<asset_id<< " allocation: "<<allocation_<<std::endl;
     order market_order;
     order limit_order;
+    int order_id_=0;
     map<int, order> result_;
     //proportion of orders executed by limit entries
     double limit_order_proportion =0.5;
@@ -323,28 +493,27 @@ funds::free_cash_distribution(int order_id
 
     if(T!=0) {
 
-        order_id = concat(-2, order_id);
+        order_id_ = concat(-3, order_id);
         market_order.set_id(this->get_identifier());
         market_order.set_order_type(order::market);
         market_order.set_ordered_asset(asset_id);
         market_order.set_order_size((1 - limit_order_proportion) * T, quote);
         market_order.set_status(order::active);
-        result_.emplace(order_id, market_order);
+        result_.emplace(order_id_, market_order);
 
 
-        order_id = concat(-3, order_id);
+        order_id_ = concat(-4, order_id);
         limit_order.set_id(this->get_identifier());
         limit_order.set_order_type(order::limit);
         limit_order.set_ordered_asset(asset_id);
         limit_order.set_order_size((limit_order_proportion) * T, quote);
         limit_order.set_status(order::active);
-        result_.emplace(order_id, limit_order);
+        result_.emplace(order_id_, limit_order);
     }
     return result_;
 }
-void funds::trade_strategy(trading_strategy tradingStrategy, double bias){
+void funds::trade_strategy(trading_strategy tradingStrategy){
     this->fund_philosophy = tradingStrategy;
-    this->value_bias = bias;
 
 }
 
@@ -432,7 +601,7 @@ funds::ag_value_demand() {
     map<int, order> result_;
     auto quotes = this->stocks_on_market;
     // wealth allocated to stocks
-    double portfolio_alloc = 0.6;
+    double portfolio_alloc = 1;
     //trading signal for the ith stock
     double phi = 0;
     //sum of the trading signals
@@ -441,24 +610,19 @@ funds::ag_value_demand() {
     int t = int(clock->current_time());
 
 
-//Ornstein Uhlenbeck params
-
-
-    //noise with a half life of 6 years, to match empirical evidence
-    double mean_reversion_rate = (1 - pow(0.5, 1. / (6 * 252.0)));//1./(6*252.0)
-
-
-
-    int c = 0;
-    //map<int, vector<double>> noise;
-
-    for (auto &[k, v] : quotes) {
-
 
 //compute a sum of exponents of signals, see McFadden choice function...........................(1)
         for (auto &[k, v] : quotes) {
             const auto &[time, bid, ask] = v.get_price();
-            auto value = v.get_value(t);
+
+            double kc = 1.1;
+            double day_kc = pow((kc),(1./252))-1;//base cost of capital
+            double g = day_kc-((v.get_dividend(1)/v.get_value(1)));
+            double kc_modified = kc+this->bias;
+            double day_kc_modified = pow((kc_modified),(1./252))-1;//base cost of capital
+
+
+            double value = v.get_value(t);//*(day_kc - g)/(day_kc_modified - g);
             double quoted_price_ = v.get_midprice();
 
             //the decision to buy a stock is inferred from the ask price
@@ -487,9 +651,14 @@ funds::ag_value_demand() {
             double current_position = 0;
             if (stocks_at_hand.end() != it) { current_position = it->second; }
             const auto &[time, bid, ask] = v.get_price();
-            double value = v.get_value(t);
+            double kc = 1.1;
+            double day_kc = pow((kc),(1./252))-1;//base cost of capital
+            double g = day_kc-((v.get_dividend(1)/v.get_value(1)));
+            double kc_modified = kc+this->bias;
+            double day_kc_modified = pow((kc_modified),(1./252))-1;//base cost of capital
 
 
+            double value = v.get_value(t);//*(day_kc - g)/(day_kc_modified - g);
             double quoted_price_ = v.get_midprice();
 
             //the decision to buy a stock is inferred from the ask price
@@ -540,16 +709,40 @@ funds::ag_value_demand() {
                 }
 
                 //now rebalance the stocks portfolio to reflect relative signal strength
-                auto current_price_orders = current_price_order(
-                        order_num, k, quoted_price_, allocation, portfolio_alloc, this->wealth, free_cash,
-                        current_position);
 
-
-                auto predicted_price_orders = predicted_price_order(
-                        order_num, k, quoted_price_, value, allocation, portfolio_alloc, this->wealth, current_position
+                auto rebalancing_orders = reb_wealth(
+                        order_num
+                        , k
+                        , quoted_price_
+                        , value
+                        , allocation
+                        , portfolio_alloc
+                        , this->wealth
+                        , current_position
                 );
 
-                result_.merge(current_price_orders);
+                auto free_cash_distribution1_ = free_cash_distribution(
+                        order_num
+                        ,k
+                        ,quoted_price_
+                        ,allocation
+                        ,free_cash
+                );
+
+
+                auto predicted_price_orders = stocks_order(
+                        order_num
+                        , k
+                        , quoted_price_
+                        , value
+                        , allocation
+                        , portfolio_alloc
+                        , this->wealth
+                        , current_position
+                );
+
+                result_.merge(rebalancing_orders);
+                result_.merge(free_cash_distribution1_);
                 result_.merge(predicted_price_orders);
 
             }
@@ -559,29 +752,28 @@ funds::ag_value_demand() {
 
             else {
 
-                auto cash_distribution = free_cash_distribution(order_num, k, quoted_price_, allocation, free_cash);
+//                auto cash_distribution = free_cash_distribution(order_num, k, quoted_price_, allocation, free_cash);
 
-//            auto current_price_orders = current_price_order(
-//                    order_num
-//                    ,k
-//                    ,quoted_price_
-//                    ,allocation
-//                    ,portfolio_alloc
-//                    ,this->wealth
-//                    ,free_cash
-//                    ,current_position);
+            auto free_cash_distribution1_ = free_cash_distribution(
+                        order_num
+                        ,k
+                        ,quoted_price_
+                        ,allocation
+                        ,free_cash
+                     );
 
-                auto predicted_price_orders = predicted_price_order(
+
+                auto predicted_price_orders = stocks_order(
                         order_num, k, quoted_price_, value, allocation, portfolio_alloc, this->wealth, current_position
                 );
 
-                result_.merge(cash_distribution);
+                result_.merge(free_cash_distribution1_);
                 result_.merge(predicted_price_orders);
 
             }
         }
         return result_;
-    }
+
 }
 
 
@@ -643,8 +835,7 @@ funds::ag_noise_demand(){
         double value = 2.*v.get_value(t)/(1.+exp(-X_t));
         X_t = noise1.find(k)->second;
 
-std::cout<<"******** "<< X_t<<std::endl;
-        double quoted_price_ = value;
+       double quoted_price_ = v.get_midprice();
 
                 //the decision to buy a stock is inferred from the ask price
                 //while the decision to sell a stock is inferred from the ask price
@@ -720,7 +911,7 @@ std::cout<<"******** "<< X_t<<std::endl;
                     ,free_cash
                     ,current_position);
 
-            auto predicted_price_orders = predicted_price_order(order_num
+            auto predicted_price_orders = stocks_order(order_num
                     ,k
                     ,quoted_price_
                     ,value
@@ -755,7 +946,7 @@ std::cout<<"******** "<< X_t<<std::endl;
 //                    ,free_cash
 //                    ,current_position);
 
-            auto predicted_price_orders = predicted_price_order(order_num
+            auto predicted_price_orders = stocks_order(order_num
                     ,k
                     ,quoted_price_
                     ,value
@@ -781,9 +972,8 @@ funds::ag_momentum_demand() {
     auto quotes = this->stocks_on_market;
     //dummy threshold TODO: link this variable with actual value
     double portfolio_alloc = 0.6;// wealth allocated to stock potfolio
-    double sum_of_signals = 0;;
+    double sum_of_signals = 0;
     double phi = 0; //trading signal for stock i
-
     int t = int(clock->current_time());
     double limit_order_proportion =0.5;
 
@@ -794,16 +984,15 @@ funds::ag_momentum_demand() {
     for (auto &[k, v] : quotes) {
         if (t > window_size) {
             double quoted_price_ = v.get_midprice();
-            int window_size_MA1 = 200;
-            int window_size_MA2 = 500;
 
-            vector<double> hist_prices_MA1 = v.get_price_range(window_size_MA1 - 1);
-            vector<double> hist_prices_MA2 = v.get_price_range(window_size_MA2 - 1);
+
+            vector<double> hist_prices_MA1 = v.get_price_range(this->window_size_MA1 - 1);
+            vector<double> hist_prices_MA2 = v.get_price_range(this->window_size_MA2 - 1);
             double MA1 = std::accumulate(hist_prices_MA1.begin(), hist_prices_MA1.end(), 0.);
             double MA2 = std::accumulate(hist_prices_MA2.begin(), hist_prices_MA2.end(), 0.);
 
-            double trend1 = (MA1 + (quoted_price_)) / window_size_MA1;
-            double trend2 = (MA2 + (quoted_price_)) / window_size_MA2;
+            double trend1 = (MA1 + (quoted_price_)) / this->window_size_MA1;
+            double trend2 = (MA2 + (quoted_price_)) / this->window_size_MA2;
             if (MA2> 0.) { phi =  (log(trend1 / trend2)); }
             else { phi = 0.; }//stock signal
             sum_of_signals = sum_of_signals + abs(phi);
@@ -819,16 +1008,15 @@ funds::ag_momentum_demand() {
         if (stocks_at_hand.end() != i) { current_position = i->second; }
 
         double quoted_price_ = v.get_midprice();
-        int window_size_MA1 = 200;
-        int window_size_MA2 = 500;
+        
 
-        vector<double> hist_prices_MA1 = v.get_price_range(window_size_MA1 - 1);
-        vector<double> hist_prices_MA2 = v.get_price_range(window_size_MA2 - 1);
+        vector<double> hist_prices_MA1 = v.get_price_range(this->window_size_MA1 - 1);
+        vector<double> hist_prices_MA2 = v.get_price_range(this->window_size_MA2 - 1);
         double MA1 = std::accumulate(hist_prices_MA1.begin(), hist_prices_MA1.end(), 0.);
         double MA2 = std::accumulate(hist_prices_MA2.begin(), hist_prices_MA2.end(), 0.);
 
-        double trend1 = (MA1 + (quoted_price_)) / window_size_MA1;
-        double trend2 = (MA2 + (quoted_price_)) / window_size_MA2;
+        double trend1 = (MA1 + (quoted_price_)) / this->window_size_MA1;
+        double trend2 = (MA2 + (quoted_price_)) / this->window_size_MA2;
         if (MA2 > 0.) { phi = (log(trend1 / trend2)); }
         else { phi = 0.; }//stock signal
 
@@ -943,10 +1131,9 @@ std::map<int, order> funds::ag_index_demand(){
     map<int,double> target_allocation = {};
     vector<double> top_quotes = {};
     for(auto &[k, v] : quotes){
-        std::cout<<"qoutes "<<k<<": "<<v.get_midprice();
         top_quotes.push_back(v.get_midprice());
     }
-    std::cout<<endl;
+
 
 
     
@@ -963,7 +1150,6 @@ std::map<int, order> funds::ag_index_demand(){
             phi = shares_outstanding * quoted_price_;//stock signal
 
             sum_of_signals = sum_of_signals + abs(phi);
-            std::cout<<"sharesoutstanding: "<<shares_outstanding<<" marketcap: "<<phi<<" sumofsig: "<< sum_of_signals<<std::endl;
         }
     }
 
@@ -1097,7 +1283,7 @@ funds::ag_growth_demand(){
     double phi = 0; //trading signal for stock i
     double
 
-    limit_order_proportion =0.5;
+    limit_order_proportion =0.;
     auto t = clock->current_time();
 
 

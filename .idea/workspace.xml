@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="MEH" targetName="MEH" />
@@ -11,8 +29,83 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91711107-2cba-4769-a20b-48cc6c0df350" name="Default Changelist" comment="">
+    <list default="true" id="91711107-2cba-4769-a20b-48cc6c0df350" name="Default Changelist" comment="Queued market orders">
+      <change afterPath="$PROJECT_DIR$/build/CMakeCache.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeCCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeCXXCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeSystem.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeError.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi_CXX.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPCheckVersion.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPCheckVersion.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/ompver_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/ompver_CXX.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/DependInfo.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/Market.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/Market.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/build.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/cmake_clean.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/company.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/company.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/compiler_depend.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/compiler_depend.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/depend.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/flags.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/fund.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/fund.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/funds.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/funds.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/identity.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/identity.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/main.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/main.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/market_watch.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/market_watch.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/momentum_investor.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/momentum_investor.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/noisy_investor.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/noisy_investor.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/order.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/order.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price_setter.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price_setter.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/progress.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/stochastic_math.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/stochastic_math.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/value_investor.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/value_investor.cpp.o.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/cmake.check_cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/progress.marks" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/Experiment_equal_wealth2044.000000.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/MEH" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/cmake_install.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/noisefile.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Market.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Market.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fund.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/fund.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funds.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/funds.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funds.h" beforeDir="false" afterPath="$PROJECT_DIR$/funds.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market_watch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/market_watch.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market_watch.h" beforeDir="false" afterPath="$PROJECT_DIR$/market_watch.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/price_setter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/price_setter.h" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.h" afterDir="false" />
     </list>
@@ -46,6 +139,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
   </component>
   <component name="RecentsManager">
@@ -55,11 +149,6 @@
   </component>
   <component name="RunManager">
     <configuration name="MEH" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MEH" TARGET_NAME="MEH" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MEH" RUN_TARGET_NAME="MEH">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -78,12 +167,36 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1658318288117</updated>
-      <workItem from="1658318289904" duration="2281000" />
+      <workItem from="1658318289904" duration="24352000" />
+      <workItem from="1658395768927" duration="87853000" />
     </task>
+    <task id="LOCAL-00001" summary="Queued market orders">
+      <created>1658320892221</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1658320892221</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Queued market orders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Queued market orders" />
   </component>
   <component name="WindowStateProjectService">
     <state width="512" height="466" key="DebuggerActiveHint" timestamp="1658319471237">
@@ -98,45 +211,99 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="512" y="151" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1658318834891" />
-    <state width="1396" height="283" key="GridCell.Tab.0.bottom" timestamp="1658319737581">
+    <state width="1396" height="83" key="GridCell.Tab.0.bottom" timestamp="1658790884857">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658319737581" />
-    <state width="1396" height="283" key="GridCell.Tab.0.center" timestamp="1658319737579">
+    <state width="1396" height="83" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658790884857" />
+    <state width="1396" height="2" key="GridCell.Tab.0.bottom/40.25.1400.875@40.25.1400.875" timestamp="1658342730729" />
+    <state width="1396" height="240" key="GridCell.Tab.0.bottom/42.25.1398.875@42.25.1398.875" timestamp="1658500459238" />
+    <state width="1396" height="83" key="GridCell.Tab.0.center" timestamp="1658790884856">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1658319737579" />
-    <state width="1396" height="283" key="GridCell.Tab.0.left" timestamp="1658319737578">
+    <state width="1396" height="83" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1658790884856" />
+    <state width="1396" height="2" key="GridCell.Tab.0.center/40.25.1400.875@40.25.1400.875" timestamp="1658342730684" />
+    <state width="1396" height="240" key="GridCell.Tab.0.center/42.25.1398.875@42.25.1398.875" timestamp="1658500459219" />
+    <state width="1396" height="83" key="GridCell.Tab.0.left" timestamp="1658790884855">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1658319737578" />
-    <state width="1396" height="283" key="GridCell.Tab.0.right" timestamp="1658319737580">
+    <state width="1396" height="83" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1658790884855" />
+    <state width="1396" height="2" key="GridCell.Tab.0.left/40.25.1400.875@40.25.1400.875" timestamp="1658342730681" />
+    <state width="1396" height="240" key="GridCell.Tab.0.left/42.25.1398.875@42.25.1398.875" timestamp="1658500459213" />
+    <state width="1396" height="83" key="GridCell.Tab.0.right" timestamp="1658790884856">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1658319737580" />
-    <state width="1396" height="283" key="GridCell.Tab.1.bottom" timestamp="1658319744796">
+    <state width="1396" height="83" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1658790884856" />
+    <state width="1396" height="2" key="GridCell.Tab.0.right/40.25.1400.875@40.25.1400.875" timestamp="1658342730727" />
+    <state width="1396" height="240" key="GridCell.Tab.0.right/42.25.1398.875@42.25.1398.875" timestamp="1658500459234" />
+    <state width="1396" height="84" key="GridCell.Tab.1.bottom" timestamp="1658790884747">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658319744796" />
-    <state width="1396" height="283" key="GridCell.Tab.1.center" timestamp="1658319744794">
+    <state width="1396" height="84" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1658790884747" />
+    <state width="1396" height="189" key="GridCell.Tab.1.bottom/42.25.1398.875@42.25.1398.875" timestamp="1658570818387" />
+    <state width="1396" height="274" key="GridCell.Tab.1.bottom/44.25.1396.875@44.25.1396.875" timestamp="1658411208966" />
+    <state width="1396" height="84" key="GridCell.Tab.1.center" timestamp="1658790884745">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1658319744794" />
-    <state width="1396" height="283" key="GridCell.Tab.1.left" timestamp="1658319744792">
+    <state width="1396" height="84" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1658790884745" />
+    <state width="1396" height="189" key="GridCell.Tab.1.center/42.25.1398.875@42.25.1398.875" timestamp="1658570818385" />
+    <state width="1396" height="274" key="GridCell.Tab.1.center/44.25.1396.875@44.25.1396.875" timestamp="1658411208965" />
+    <state width="1396" height="84" key="GridCell.Tab.1.left" timestamp="1658790884744">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1658319744792" />
-    <state width="1396" height="283" key="GridCell.Tab.1.right" timestamp="1658319744795">
+    <state width="1396" height="84" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1658790884744" />
+    <state width="1396" height="189" key="GridCell.Tab.1.left/42.25.1398.875@42.25.1398.875" timestamp="1658570818384" />
+    <state width="1396" height="274" key="GridCell.Tab.1.left/44.25.1396.875@44.25.1396.875" timestamp="1658411208964" />
+    <state width="1396" height="84" key="GridCell.Tab.1.right" timestamp="1658790884746">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1396" height="283" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1658319744795" />
-    <state x="319" y="186" key="Vcs.Push.Dialog.v2" timestamp="1658318855473">
+    <state width="1396" height="84" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1658790884746" />
+    <state width="1396" height="189" key="GridCell.Tab.1.right/42.25.1398.875@42.25.1398.875" timestamp="1658570818386" />
+    <state width="1396" height="274" key="GridCell.Tab.1.right/44.25.1396.875@44.25.1396.875" timestamp="1658411208965" />
+    <state x="319" y="186" key="Vcs.Push.Dialog.v2" timestamp="1658834468927">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="319" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1658318855473" />
+    <state x="319" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1658834468926" />
     <state width="720" height="450" key="XDebugger.FullValuePopup" timestamp="1658319471223">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="720" height="450" key="XDebugger.FullValuePopup/0.0.1440.900@0.0.1440.900" timestamp="1658319471223" />
+    <state x="260" y="182" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1658592193290">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="260" y="182" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1440.900@0.0.1440.900" timestamp="1658592193290" />
+    <state x="383" y="194" width="672" height="678" key="search.everywhere.popup" timestamp="1658667991951">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="383" y="194" width="672" height="678" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1658667991951" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <condition expression="this-&gt;cash_at_hand&lt;0;" language="ObjectiveC" />
+          <url>file://$PROJECT_DIR$/funds.cpp</url>
+          <line>690</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Market.cpp</url>
+          <line>283</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <condition expression="t==176;" language="ObjectiveC" />
+          <url>file://$PROJECT_DIR$/funds.cpp</url>
+          <line>610</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

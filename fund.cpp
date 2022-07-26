@@ -304,7 +304,7 @@ fund::balance_bd(vector<order> &executed_orders){
     for(auto &x : executed_orders) {
 //......inform trader if a market order was executed
         if(x.get_order_type() == order::ORDER_TYPE::market){
-            this->pending_market_order = false;
+            this->pending_market_order.find(x.get_ordered_asset())->second = false;
         }
 
 //......update cash at hand

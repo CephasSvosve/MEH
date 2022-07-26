@@ -28,22 +28,29 @@ private:
 
 
 
-    map<int,vector<order>> ask;
+
     map<int,queue<order>> market_orders = {};//queue so that orders are executed using FIFO
     map<int,double> best_bid;
     map<int,double> best_ask;
     map<int,double> mid_price;
-    map<int,vector<order>> bid;
+    map<int,map<int,order>> ask = {};
+    map<int,map<int,order>> bid = {};
     map<int,double> inventory_t_1;
     map<int,vector<double>> study;
+
+    //thread synchronizers
+    mutex g_mutex;
+    condition_variable g_cv;
+    bool g_ready = false;
 
 
 public:
     map<int, funds*> trading_institutions;
+
     map<int,company>
     &tradeable_assets();
 
-    double order_size = 100.;
+    double order_size = 10000.;
     int balance_count = 0;
 
     void register_assets(int number_of_assets);
@@ -52,6 +59,7 @@ public:
     void update_balances(int t);
     void set_initial_quotes();
     void receive_orders();
+    void receiving_orders(market_watch &market_clock);
     void queue_market_orders(int id, order order_);
     void queue_bid(int id, order order_);
     void queue_ask(int id, order order_);
@@ -65,20 +73,12 @@ public:
             ,double &curr_inventory
             ,double init_price
             ,int identifier
-            ,int asset_id) const;
-
-
-
-
-
-
+            ,int asset_id
+            ,double quote) const;
 };
 
 
 #endif //UNTITLED32_PRICE_SETTER_H
-
-
-
 
 ////
 //// Created by Cephas Svosve on 5/1/2022.

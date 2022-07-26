@@ -27,6 +27,9 @@ class funds
         :public fund
 {
 private:
+    int window_size_MA1 = 0;
+    int window_size_MA2 = 0;
+
     int window_size = 500;
     int value_window = 500;
     map<int,int> rebalancing_count;
@@ -35,7 +38,7 @@ private:
 
 
 public:
-    funds(int sid = 6);
+    funds(int bias = 0);
 
 
 
@@ -56,9 +59,9 @@ public:
 
 
     trading_strategy fund_philosophy = {};
-    double value_bias;
+    double bias;
 
-    void trade_strategy(trading_strategy, double bias = 0.1);
+    void trade_strategy(trading_strategy);
 
 
     map<int, order>
@@ -76,7 +79,19 @@ public:
                 );
 
     map<int, order>
-    predicted_price_order(   int order_id
+    stocks_order(   int order_id
+            , int asset_id
+            , double quote
+            , double predicted_quote
+            , double allocation_
+            ,double port_alloc
+            , double wealth_
+            , double current_position
+    );
+
+    map<int, order>
+    reb_wealth(
+            int order_id
             , int asset_id
             , double quote
             , double predicted_quote

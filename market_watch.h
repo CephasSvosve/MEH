@@ -16,11 +16,13 @@ private:
     time_point<std::chrono::steady_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000>>>
             start_time,
             creation_time;
+    double manual_time = 0;
+    double terminal_time;
 
 
 
 public:
-    enum dt {one_microsecond = 0, one_millisecond=1, one_second=2, one_minute=3};
+    enum dt {one_microsecond = 0, one_millisecond=1, one_second=2, one_minute=3, manual = 4};
     dt day_length;
 
 
@@ -37,7 +39,9 @@ public:
     get_creation_time();
 
     void reset();
-
+    void ticking();
+    void set_terminal_time(double tm);
+    double get_terminal_time() const;
 };
 
 
