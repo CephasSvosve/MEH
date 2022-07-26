@@ -17,7 +17,7 @@ private:
             start_time,
             creation_time;
     double manual_time = 0;
-    double terminal_time;
+    double terminal_time = 0;
 
 
 

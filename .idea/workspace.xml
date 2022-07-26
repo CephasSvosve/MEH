@@ -30,84 +30,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91711107-2cba-4769-a20b-48cc6c0df350" name="Default Changelist" comment="Queued market orders">
-      <change afterPath="$PROJECT_DIR$/build/CMakeCache.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeError.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindMPI/test_mpi_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPCheckVersion.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPCheckVersion.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/ompver_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/FindOpenMP/ompver_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/Market.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/Market.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/company.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/company.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/compiler_depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/compiler_depend.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/fund.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/fund.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/funds.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/funds.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/identity.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/identity.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/main.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/main.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/market_watch.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/market_watch.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/momentum_investor.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/momentum_investor.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/noisy_investor.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/noisy_investor.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/order.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/order.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price_setter.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/price_setter.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/stochastic_math.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/stochastic_math.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/value_investor.cpp.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/MEH.dir/value_investor.cpp.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/Experiment_equal_wealth2044.000000.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/MEH" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/noisefile.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Market.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Market.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fund.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/fund.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funds.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/funds.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funds.h" beforeDir="false" afterPath="$PROJECT_DIR$/funds.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/market_watch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/market_watch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/market_watch.h" beforeDir="false" afterPath="$PROJECT_DIR$/market_watch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/price_setter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/price_setter.h" beforeDir="false" afterPath="$PROJECT_DIR$/price_setter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +92,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658318288117</updated>
       <workItem from="1658318289904" duration="24352000" />
-      <workItem from="1658395768927" duration="87853000" />
+      <workItem from="1658395768927" duration="90269000" />
     </task>
     <task id="LOCAL-00001" summary="Queued market orders">
       <created>1658320892221</created>
@@ -177,7 +101,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658320892221</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Queued market orders">
+      <created>1658834481296</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1658834481296</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
