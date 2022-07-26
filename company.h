@@ -23,8 +23,8 @@ private:
 
     tuple<int, double> market_price;//int-market_watch
     vector<double> historical_price;//int-market_watch
-    double bid_price;
-    double ask_price;
+    double bid_price = 3;
+    double ask_price = 3;
     int day = 0;
 
 
@@ -50,7 +50,7 @@ void
 set_identifier(int identifier);
 
 void
-set_shares_outstanding(int outstanding_shares);
+set_shares_outstanding(double outstanding_shares);
 
 void
 set_market_capital();

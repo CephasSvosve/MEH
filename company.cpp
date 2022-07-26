@@ -113,7 +113,7 @@ company::set_identifier(int identifier_){
     this->identifier = identifier_;
 }
 void
-company::set_shares_outstanding(int outstanding_shares){
+company::set_shares_outstanding(double outstanding_shares){
     this->shares_outstanding = outstanding_shares;
 }
 

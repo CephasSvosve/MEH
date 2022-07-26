@@ -61,7 +61,7 @@ public:
 
 
 //pending orders
-    bool pending_market_order = false;
+    map<int,bool> pending_market_order = {};
 
 static void
    double_entry(map<int, double> &debit
