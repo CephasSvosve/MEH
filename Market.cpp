@@ -19,7 +19,7 @@ int main() {
 
 
     market_watch watch(market_watch::one_second);
-    watch.set_terminal_time(1000);
+    watch.set_terminal_time(50000);
 
 //Define the price setter
     price_setter market_;
@@ -48,7 +48,7 @@ int main() {
     double experiment_funds_shares = 0.5 * shares_outstanding * experiment_fund_wealth;
 
 //define species populations
-    int num_traders = 1000;
+    int num_traders = 100;
     double funds_cash = 1 * market_cash * other_funds_wealth / num_traders;
     double funds_shares = 0. * shares_outstanding * other_funds_wealth / num_traders;
 

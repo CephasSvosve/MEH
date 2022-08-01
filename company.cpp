@@ -178,6 +178,7 @@ void company::set_dividends_process(vector<double> dp){
 }
 
 void company::set_intrinsic_value(vector<double> iv){
+    this->intrinsic_value.reserve(50400);
     this->intrinsic_value = std::move(iv);
 }
 

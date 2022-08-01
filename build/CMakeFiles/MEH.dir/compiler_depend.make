@@ -4496,7 +4496,8 @@ CMakeFiles/MEH.dir/price_setter.cpp.o: ../price_setter.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/deque \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/iomanip \
   ../wiener.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/queue
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/queue \
+  /usr/local/include/omp.h
 
 CMakeFiles/MEH.dir/stochastic_math.cpp.o: ../stochastic_math.cpp \
   ../stochastic_math.h \
@@ -5550,6 +5551,8 @@ CMakeFiles/MEH.dir/value_investor.cpp.o: ../value_investor.cpp \
 
 
 ../value_investor.cpp:
+
+/usr/local/include/omp.h:
 
 ../price.cpp:
 

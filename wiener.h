@@ -22,7 +22,7 @@ enum processes{Earnings, Dividends, Free_Cash_Flows};
 
 static tuple<VectorXd,VectorXd,VectorXd,MatrixXd, map<int,vector<double>>, double> params(processes process){
 //trade period
-    double trade_period = 1000;
+    double trade_period = 50400;
     double int_rate = 0.02;
 
     double annual_cost_of_equity = 1.1;

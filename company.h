@@ -21,6 +21,7 @@ private:
     vector<double> free_cash_flow;
     vector<double> intrinsic_value;
 
+
     tuple<int, double> market_price;//int-market_watch
     vector<double> historical_price;//int-market_watch
     double bid_price = 3;

@@ -9,7 +9,7 @@
 funds::funds(int bias) {
 
 //noise traders variations
-    dX = generateWhiteNoise1(bias,3,50400);
+    dX = generateWhiteNoise1(bias,3,50000);
 
 //value trader variations
     this->bias = 0;//-0.005 + (0.00001*bias);
