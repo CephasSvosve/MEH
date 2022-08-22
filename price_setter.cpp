@@ -140,11 +140,11 @@ void price_setter::set_initial_quotes(){
     this->get_inform(this->assets);
 }
 
-void price_setter::receive_orders(){
+void price_setter::receive_orders(int trader){
     this->bid.clear();
     this->ask.clear();
-//    this->market_orders.clear();
-#pragma omp parallel for
+    this->market_orders.clear();
+//#pragma omp parallel for
         for (auto &[k, v] : this->trading_institutions) {
             int abh = k;
             if ((v->wealth) > 0) {
@@ -158,7 +158,8 @@ void price_setter::receive_orders(){
                             } else {
                                 queue_ask(j.get_ordered_asset(), j);
                             }
-                        } else {//if order is a market order we stack the market order vector
+                        } else
+                            if(j.get_id() == trader){//if order is a market order we stack the market order vector
                             queue_market_orders(j.get_ordered_asset(), j);
                         }
                     }
@@ -175,17 +176,17 @@ void price_setter::receive_orders(){
 }
 
 
-void price_setter::receiving_orders(market_watch &market_clock){
-while(market_clock.current_time() < market_clock.get_terminal_time()) {
-            unique_lock<std::mutex> ul(g_mutex);
-            this->receive_orders();
-            g_ready = true;
-            ul.unlock();
-            g_cv.notify_one();
-            ul.lock();
-            g_cv.wait(ul,[this](){return (!g_ready);});
-    }
-}
+//void price_setter::receiving_orders(market_watch &market_clock){
+//while(market_clock.current_time() < market_clock.get_terminal_time()) {
+//            unique_lock<std::mutex> ul(g_mutex);
+//            this->receive_orders();
+//            g_ready = true;
+//            ul.unlock();
+//            g_cv.notify_one();
+//            ul.lock();
+//            g_cv.wait(ul,[this](){return (!g_ready);});
+//    }
+//}
 
 
 void price_setter::queue_market_orders(int id, order order_){
@@ -678,7 +679,7 @@ record_executed_orders(tuple<order,order> &settlements){
 
 
 order *get_best_bid(map<double, vector<order>, greater<>> &bids){
-    order *result = nullptr;
+    order *result = {};
     for(auto &[b,vec]: bids){
         for(auto &x:vec){
             if (x.get_status() == 1){
@@ -693,11 +694,11 @@ order *get_best_bid(map<double, vector<order>, greater<>> &bids){
 
 
 order *get_best_ask(map<double, vector<order>> &asks){
-    order *result = nullptr;
+    order *result = {};
     for(auto &[a,vec]: asks){
         for(auto &x:vec){
             if (x.get_status() == 1){
-                result = &x;
+                result = (&x);
                 goto exit;
             }
         }
@@ -818,10 +819,10 @@ price_setter::update_mm_orders(const map<double, vector<order>, greater<>> &bid_
 //compute target bid and target ask
     double d_shares   =  curr_inventory - init_inventory;
 
-    target_ask =  init_price - ((d_shares/1000)*0.01);
-    std::cout<<" dshares "<<d_shares<<" price_movement "<<((d_shares/1000)*0.01)<<std::endl;
+    target_ask =  init_price - ((d_shares/100)*0.01);
+    std::cout<<"curr_cash "<< this->cash_at_hand<<"curr_shares " <<this->stocks_at_hand.find(asset_id)->second<<" dshares "<<d_shares<<" price_movement "<<((d_shares/1000)*0.01)<<std::endl;
 
-    target_bid = target_ask-0.05 ;//market maker's bid price is always atleast 5 basis points below the ask price
+    target_bid = 0.99*target_ask ;//market maker's bid price is always atleast 5 basis points below the ask price
 
 
 //setting a new_ask price give a target ask
@@ -841,12 +842,21 @@ price_setter::update_mm_orders(const map<double, vector<order>, greater<>> &bid_
 
 //create order
     //double cash_ = cash_at_hand/3;
+    double sell_size = min(abs(this->stocks_at_hand.find(asset_id)->second), 100*quote);
+
+    double buy_size;
+    if(this->cash_at_hand>quote){
+        buy_size = min(this->cash_at_hand/(3*quote), 100*quote );
+    }else{
+        buy_size = 0;
+    }
+
 
     //buy order
     buy_limit.set_id(identifier);
     buy_limit.set_order_type(order::limit);
     buy_limit.set_ordered_asset(asset_id);
-    buy_limit.set_order_size(100*quote, new_bid);
+    buy_limit.set_order_size(buy_size, new_bid);
     buy_limit.set_status(order::active);
     get<0>(new_order) = buy_limit;
 
@@ -854,7 +864,7 @@ price_setter::update_mm_orders(const map<double, vector<order>, greater<>> &bid_
     sell_limit.set_id(identifier);
     sell_limit.set_order_type(order::limit);
     sell_limit.set_ordered_asset(asset_id);
-    sell_limit.set_order_size(-100*quote, new_ask);
+    sell_limit.set_order_size(-sell_size, new_ask);
     sell_limit.set_status(order::active);
     get<1>(new_order) = sell_limit;
 
@@ -866,26 +876,18 @@ price_setter::update_mm_orders(const map<double, vector<order>, greater<>> &bid_
 void
 price_setter::clear(market_watch &market_clock) {
 
-double name;
 
-cout << "experiment_number: ";
-cin >> name;
-std::ofstream myfile;
-std::string file_name = "Experiment_equal_wealth" + std::to_string(name);//"Experiment_(long_run_included)_" + std::to_string(passive_share);
-file_name += ".csv";
-myfile.open (file_name);
 
 //useful parameters
-int day_count = 0;
+
 double total_spending = 0;
 double market_wealth = 1.68e10;
 double shares_outstanding = 0.5 * market_wealth / 75;
 double market_cash = 0.5 * market_wealth;
 
 
-    while (market_clock.current_time() < market_clock.get_terminal_time()){
-        unique_lock<std::mutex> ul(g_mutex);
-        g_cv.wait(ul, [this](){return g_ready;});
+//        unique_lock<std::mutex> ul(g_mutex);
+//        g_cv.wait(ul, [this](){return g_ready;});
 //Params definition
         map<int, order> ask_result_ = {};
         map<int, order> bid_result_ = {};
@@ -928,6 +930,7 @@ double market_cash = 0.5 * market_wealth;
                     && k->stocks_at_hand.find(i)->second < 0) {
 
                     short_stocks += k->stocks_at_hand.find(i)->second;
+
                 }
             }
 
@@ -968,6 +971,7 @@ double market_cash = 0.5 * market_wealth;
 //create price maps
 //buy-limits
             map<double, vector<order>, greater<>> bid_orders = {};
+            bid_orders.clear();
             if (!this->bid.empty()) {
                 if (this->bid.find(k) != this->bid.end()){
                     {
@@ -989,6 +993,7 @@ double market_cash = 0.5 * market_wealth;
 
 //sell-limits
             map<double, vector<order>> ask_orders = {};
+            ask_orders.clear();
             if (!this->ask.empty()) {
                 if (this->ask.find(k) != this->ask.end()) {
                     for (auto &[i,x] : this->ask.find(k)->second) {
@@ -1085,8 +1090,8 @@ double market_cash = 0.5 * market_wealth;
 
 //match market orders
 
-            cancel_mm_orders(
-                    this->get_identifier(), bid_orders, ask_orders);
+//            cancel_mm_orders(
+//                    this->get_identifier(), bid_orders, ask_orders);
 
 
             tuple<order, order> new_orders1 =
@@ -1098,7 +1103,8 @@ double market_cash = 0.5 * market_wealth;
 //                    std::cout << "mmsk0 " << get<1>(new_orders1).get_proposed_price() << std::endl;
             //match market orders with limit orders
 
-            if (this->market_orders.find(k) != market_orders.end()) {
+            while (this->market_orders.find(k) != market_orders.end()
+                    && !this->market_orders.find(k)->second.empty()) {
                 tuple<order, order>
                         matched_orders =
                         match_market_orders(this->market_orders.find(k)->second.front(),
@@ -1108,12 +1114,22 @@ double market_cash = 0.5 * market_wealth;
                     std::cout << "morder_before_pop " << this->market_orders.find(k)->second.front().get_status()
                               << " size " << this->market_orders.find(k)->second.front().get_order_size() << std::endl;
                     this->market_orders.find(k)->second.pop();
-                    std::cout << "morder_after_pop " << this->market_orders.find(k)->second.front().get_status()
-                              << " size " << this->market_orders.find(k)->second.front().get_order_size() << std::endl;
+//                    std::cout << "morder_after_pop " << this->market_orders.find(k)->second.front().get_status()
+//                              << " size " << this->market_orders.find(k)->second.front().get_order_size() << std::endl;
                 }
 
                 executed_orders_ = {};
                 executed_orders_ = record_executed_orders(matched_orders);
+
+                cancel_mm_orders(
+                        this->get_identifier(), bid_orders, ask_orders);
+
+                tuple<order, order> new_orders2 =
+                        update_mm_orders(bid_orders, ask_orders, this->initial_invetory.find(k)->second,
+                                         (this->stocks_at_hand.find(k)->second), 25.,
+                                         this->get_identifier(), k, stock.get_midprice());
+
+                add_mm_orders(new_orders2, bid_orders, ask_orders);
             }
 
             //update balances after each match
@@ -1174,7 +1190,8 @@ double market_cash = 0.5 * market_wealth;
 //                      << get_best_bid(bid_orders)->get_id() << std::endl;
 //            std::cout << "bestask_ " << get_best_ask(ask_orders)->get_proposed_price() << " from "
 //                      << get_best_ask(ask_orders)->get_id() << std::endl;
-            while (get_best_bid(bid_orders)->get_proposed_price() >= get_best_ask(ask_orders)->get_proposed_price()) {
+            while (get_best_bid(bid_orders)->get_proposed_price() >= get_best_ask(ask_orders)->get_proposed_price()
+            && get_best_bid(bid_orders)->get_order_size()>0&& get_best_ask(ask_orders)->get_order_size()>0) {
 //        std::cout<<"passed by 2"<<std::endl;
                 tuple<order, order>
                         matched_limits2 =
@@ -1195,18 +1212,12 @@ double market_cash = 0.5 * market_wealth;
                     if (i != this->get_identifier()) {
                         if(this->trading_institutions.find(i)!= this->trading_institutions.end()){
                         this->trading_institutions.find(i)->second->balance_bd(f);
-                    }}
+                        }
+                    }
                 }
 
-                cancel_mm_orders(
-                        this->get_identifier(), bid_orders, ask_orders);
 
-                tuple<order, order> new_orders2 =
-                        update_mm_orders(bid_orders, ask_orders, this->initial_invetory.find(k)->second,
-                                         (this->stocks_at_hand.find(k)->second), 25.,
-                                         this->get_identifier(), k, stock.get_midprice());
 
-                add_mm_orders(new_orders2, bid_orders, ask_orders);
             }
 
             {
@@ -1223,14 +1234,14 @@ double market_cash = 0.5 * market_wealth;
         }
 
 
-            prevailing_ask = floor(get_best_ask(ask_orders)->get_proposed_price() * 100) / 100;
-            prevailing_bid = floor(get_best_bid(bid_orders)->get_proposed_price() * 100) / 100;
+            prevailing_ask = floor((*get_best_ask(ask_orders)).get_proposed_price()*100)/100;
+            prevailing_bid = floor((*get_best_bid(bid_orders)).get_proposed_price()*100)/100;
 
-            std::cout << get_best_ask(ask_orders)->get_id() << " " << get_best_ask(ask_orders)->get_order_size() << " "
-                      << prevailing_ask;
-            std::cout << " " << prevailing_bid << get_best_bid(bid_orders)->get_order_size() << " "
-                      << get_best_bid(bid_orders)->get_order_size() << " " << get_best_bid(bid_orders)->get_id()
-                      << std::endl;
+//            std::cout << get_best_ask(ask_orders)->get_id() << " " << get_best_ask(ask_orders)->get_order_size() << " "
+//                      << prevailing_ask;
+//            std::cout << " " << prevailing_bid << get_best_bid(bid_orders)->get_order_size() << " "
+//                      << get_best_bid(bid_orders)->get_order_size() << " " << get_best_bid(bid_orders)->get_id()
+//                      << std::endl;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1238,7 +1249,6 @@ double market_cash = 0.5 * market_wealth;
             for (auto &[i, v]: this->trading_institutions){
                 v->stocks_on_market.find(k)->second.set_price(
                         t, prevailing_bid, prevailing_ask);
-
             }
 
             this->assets.find(k)->second.set_price(
@@ -1248,9 +1258,10 @@ double market_cash = 0.5 * market_wealth;
             this->best_bid.find(k)->second = prevailing_bid;
             this->best_ask.find(k)->second = prevailing_ask;
 
-            std::cout << "ask " << prevailing_ask << " " << "bid " << prevailing_bid << "midprice "
-                      << (prevailing_ask + prevailing_bid) / 2 << std::endl;
+//            std::cout << "ask " << prevailing_ask << " " << "bid " << prevailing_bid << "midprice "
+//                      << (prevailing_ask + prevailing_bid) / 2 << std::endl;
         }
+
         //spending
         for(auto &[x,y]: this->trading_institutions){
         (y)->wealth -= (y->wealth/market_wealth)*total_spending;
@@ -1262,29 +1273,16 @@ double market_cash = 0.5 * market_wealth;
 //        for(auto &[x,y]: this->trading_institutions){
 //            std::cout<<"new_weath "<<(y->wealth)/10e09<<std::endl;
 //        }
-        //start receiving updated orders at this point
-        g_ready = false;
-        ul.unlock();
-        g_cv.notify_one();
-        ul.lock();
+
 
         if (day_count < int((&market_clock)->current_time())) {
+
             //pay interest on cash and dividends on stocks
             for (auto &[i, v]: this->trading_institutions) {
                 v->balance_cf(int((&market_clock)->current_time()));
             }
 
-            myfile << int((&market_clock)->current_time()) << ",";
-            for (auto &[k, v] : assets) {
-
-                myfile << k << "," << (v.get_midprice()) << ",";
-                myfile << v.get_value(int((&market_clock)->current_time())) << ",";
-
-            }
-            myfile << this->get_identifier() << "," << this->wealth << ",";
             std::cout << std::endl;
-            myfile << std::endl;
-
 
             for (auto &[a, b] : tradeable_assets()) {
                 total_spending += b.get_dividend(day_count+1)*0.5 * market_wealth / 75;
@@ -1295,7 +1293,12 @@ double market_cash = 0.5 * market_wealth;
         }
 
         std::cout << " market's watch time " << (&market_clock)->current_time() << std::endl;
-        (&market_clock)->ticking();
+        //start receiving updated orders at this point
+//        g_ready = false;
+//        ul.unlock();
+//        g_cv.notify_one();
+//        ul.lock();
 
-    }
+
+
 }
