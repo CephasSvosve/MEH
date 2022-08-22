@@ -35,11 +35,16 @@ public:
     double
     current_time();
 
+    void
+    tick();
+
+    bool
+    ticking();
+
     time_point<std::chrono::steady_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000>>>
     get_creation_time();
 
     void reset();
-    void ticking();
     void set_terminal_time(double tm);
     double get_terminal_time() const;
 };
