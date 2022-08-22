@@ -60,7 +60,7 @@ public:
 
     trading_strategy fund_philosophy = {};
     double bias;
-
+    int noise_seed;
     void trade_strategy(trading_strategy);
 
 
@@ -94,7 +94,6 @@ public:
             int order_id
             , int asset_id
             , double quote
-            , double predicted_quote
             , double allocation_
             ,double port_alloc
             , double wealth_
