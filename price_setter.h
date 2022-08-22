@@ -33,8 +33,7 @@ private:
     map<int,double> best_bid;
     map<int,double> best_ask;
     map<int,double> mid_price;
-    map<int,map<int,order>> ask = {};
-    map<int,map<int,order>> bid = {};
+
     map<int,double> inventory_t_1;
     map<int,vector<double>> study;
 
@@ -45,8 +44,11 @@ private:
 
 
 public:
-    map<int, funds*> trading_institutions;
 
+    map<int,map<int,order>> ask = {};
+    map<int,map<int,order>> bid = {};
+    map<int, funds*> trading_institutions;
+    int day_count = 0;
     map<int,company>
     &tradeable_assets();
 
@@ -58,7 +60,7 @@ public:
     void register_traders(vector<funds*> participants);
     void update_balances(int t);
     void set_initial_quotes();
-    void receive_orders();
+    void receive_orders(int trader);
     void receiving_orders(market_watch &market_clock);
     void queue_market_orders(int id, order order_);
     void queue_bid(int id, order order_);
