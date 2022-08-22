@@ -33,9 +33,14 @@ market_watch::current_time(){
 
 }
 
-void
+bool
 market_watch::ticking(){
-  this->manual_time += 0.2;
+  return this->current_time() < this->terminal_time;
+}
+
+void
+market_watch::tick(){
+    this->manual_time += 1;
 }
 
 void
