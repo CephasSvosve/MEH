@@ -18,8 +18,8 @@ int main() {
 
 
 
-    market_watch watch(market_watch::one_second);
-    watch.set_terminal_time(50000);
+    market_watch watch(market_watch::manual);
+    watch.set_terminal_time(25200);
 
 //Define the price setter
     price_setter market_;
@@ -36,7 +36,7 @@ int main() {
     market_.set_initial_quotes();
 
 //set price setter's wealth
-    market_.initial_wealth(0. * market_cash, 1 * shares_outstanding);
+    market_.initial_wealth(0.5 * market_cash, 0.5 * shares_outstanding);
 
 //initial wealth given to investment strategies
 //experiment fund is the fund whose wealth we are varying in the experiments
@@ -48,9 +48,9 @@ int main() {
     double experiment_funds_shares = 0.5 * shares_outstanding * experiment_fund_wealth;
 
 //define species populations
-    int num_traders = 100;
-    double funds_cash = 1 * market_cash * other_funds_wealth / num_traders;
-    double funds_shares = 0. * shares_outstanding * other_funds_wealth / num_traders;
+    int num_traders = 3;
+    double funds_cash = 0.5 * market_cash * other_funds_wealth / num_traders;
+    double funds_shares = 0.5 * shares_outstanding * other_funds_wealth / num_traders;
 
 
 
@@ -76,32 +76,6 @@ int main() {
         index.push_back(z);
     }
 
-
-    {
-
-//    funds
-//            aggressive_value1
-////            ,aggressive_value2
-////            ,aggressive_value3
-//            ,aggressive_noisy
-////            ,aggressive_noisy2(7)
-////            ,aggressive_noisy3(8)
-////            , aggressive_momentum
-//            , aggressive_index
-//;
-
-//    vector<funds *> participants = {
-//            &aggressive_value1
-////            ,&aggressive_value2
-////            ,&aggressive_value3
-//            ,&aggressive_noisy
-////            ,&aggressive_noisy2
-////            ,&aggressive_noisy3
-////            , &aggressive_momentum
-//            , &aggressive_index
-//
-//    };
-}
 //store funds by addresses
     vector<funds *> value_participants = {};
     value_participants.reserve(value.size());
@@ -130,10 +104,10 @@ int main() {
 
 
 //investment strategy wealths
-    double value_share = 1;
-    double noise_share = 0;
-    double trend_share = 0;
-    double index_share = 0;
+    double value_share = 1.;
+    double noise_share = 0.;
+    double trend_share = 0.;
+    double index_share = 0.;
 
 
 //inform traders about assets on the market
@@ -142,7 +116,7 @@ int main() {
         p->get_inform(market_.tradeable_assets());
 
         p->trade_strategy(funds::aggressive_fundamental_value);
-        p->set_reb_period(1);
+        p->set_reb_period(63);
         p->initial_wealth(funds_cash * value_share, funds_shares * value_share);
 
 
@@ -154,7 +128,7 @@ int main() {
 
         p->trade_strategy(funds::aggressive_momentum_investment);
         p->set_reb_period(21);
-        p->initial_wealth(0 * trend_share, funds_shares * trend_share);
+        p->initial_wealth(funds_cash * trend_share, funds_shares * trend_share);
     }
 
     for (auto &p : noise_participants) {
@@ -163,7 +137,7 @@ int main() {
 
         p->trade_strategy(funds::aggressive_noise);
         p->set_reb_period(1);
-        p->initial_wealth(0 * noise_share, funds_shares * noise_share);
+        p->initial_wealth(funds_cash * noise_share, funds_shares * noise_share);
 
     }
 
@@ -173,7 +147,7 @@ int main() {
 
         p->trade_strategy(funds::aggressive_index);
         p->set_reb_period(63);
-        p->initial_wealth(0 * index_share, 0);
+        p->initial_wealth(funds_cash * index_share, funds_shares * index_share);
 
     }
 
@@ -183,24 +157,7 @@ int main() {
 
 
 
-    {
-//        double wealth_share = (1./3);
-//        aggressive_noisy.trade_strategy(funds::aggressive_noise);
-//        aggressive_noisy.set_reb_period(1);
-//        aggressive_noisy.initial_wealth(funds_cash * 0.7* (1. / (1)),
-//                                        funds_shares * 0. * (1. / (1)));
 
-//        aggressive_noisy2.trade_strategy(funds::aggressive_noise);
-//        aggressive_noisy2.set_reb_period(1);
-//        aggressive_noisy2.initial_wealth(funds_cash * wealth_share* (1. / (1)),
-//                                        funds_shares * 0. * (1. / (1)));
-
-//        aggressive_noisy3.trade_strategy(funds::aggressive_noise);
-//        aggressive_noisy3.set_reb_period(1);
-//        aggressive_noisy3.initial_wealth(funds_cash * wealth_share * (1. / (1)),
-//                                        funds_shares * 0. * (1. / (1)));
-
-    }
     {
 ////
 //////
@@ -217,12 +174,24 @@ int main() {
 }
 
 //register traders on the market
+if (value_share>0){
     market_.register_traders(value_participants);
-    market_.register_traders(trend_participants);
-    market_.register_traders(noise_participants);
-    market_.register_traders(index_participants);
-//
-//    {
+}
+    if(trend_share>0){
+        market_.register_traders(trend_participants);
+    }
+        if(noise_share>0){
+            market_.register_traders(noise_participants);
+        }
+            if(index_share>0){
+                market_.register_traders(index_participants);
+            }
+
+
+
+
+
+//{
 ////market simulation run point
 ////    std::ofstream myfile;
 ////    std::string file_name = "Experiment_equal_wealth" + std::to_string(name);//"Experiment_(long_run_included)_" + std::to_string(passive_share);
@@ -230,11 +199,46 @@ int main() {
 ////    myfile.open (file_name);
 //}
 
-    watch.start();
+watch.start();
+    double name;
 
-    market_.receive_orders();
-    thread receiving_orders(&price_setter::receiving_orders, std::ref(market_), std::ref(watch));
-    thread clearing(&price_setter::clear, std::ref(market_), std::ref(watch));
+    cout << "experiment_number: ";
+    cin >> name;
+    std::ofstream myfile;
+    std::ofstream lob;
+    std::string file_name = "Experiment_equal_wealth" + std::to_string(name);//"Experiment_(long_run_included)_" + std::to_string(passive_share);
+    file_name += ".csv";
+    myfile.open (file_name);
+    lob.open("lob.csv");
+
+
+while(watch.ticking()) {
+
+    for (auto &[k, j]: (&market_)->trading_institutions) {
+
+        (&market_)->receive_orders(j->get_identifier());
+        (&market_)->clear(watch);
+    }
+
+    watch.tick();
+
+
+
+    myfile << int((&watch)->current_time()) << ",";
+    for (auto &[k, v] : market_.tradeable_assets()) {
+
+        myfile << k << "," << (v.get_midprice()) << ",";
+        myfile << v.get_value(int((&watch)->current_time())) << ",";
+
+    }
+    myfile << (&market_)->get_identifier() << "," << (&market_)->wealth << ",";
+    myfile << std::endl;
+
+    }
+
+
+//    thread receiving_orders(&price_setter::receiving_orders, std::ref(market_), std::ref(watch));
+//    thread clearing(&price_setter::clear, std::ref(market_), std::ref(watch));
     {
         //    while((&watch)->current_time()<1001) {
 
@@ -342,8 +346,8 @@ int main() {
     }
 
 
-    receiving_orders.join();
-    clearing.join();
+//    receiving_orders.join();
+//    clearing.join();
     {
 //exit:;
 //    myfile.close();
