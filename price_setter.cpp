@@ -932,6 +932,11 @@ double market_cash = 0.5 * market_wealth;
                     short_stocks += k->stocks_at_hand.find(i)->second;
 
                 }
+//                double short_stock_increase = short_stocks - this->short_stock.find(i)->second;
+//                this->stocks_at_hand.find(i)->second += short_stock_increase;
+//                this->short_stock.find(i)->second = short_stocks;
+
+            
             }
 
             if (inventory_t_1.find(i) != inventory_t_1.end()) {
